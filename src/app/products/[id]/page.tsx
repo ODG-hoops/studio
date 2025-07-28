@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { notFound } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 import { products } from '@/lib/data';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -11,9 +11,13 @@ import { Label } from '@/components/ui/label';
 import { ShoppingCart } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import type { Product } from '@/lib/types';
 
-export default function ProductDetailPage({ params }: { params: { id: string } }) {
+type CartItem = Product & { quantity: number; size: string; color: string; };
+
+export default function ProductDetailPage() {
   const { toast } = useToast();
+  const params = useParams();
   const product = products.find(p => p.id === params.id);
 
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
@@ -32,9 +36,24 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
       });
       return;
     }
-    // Here you would typically add the item to the cart state.
-    // For now, we'll just show a success toast.
-    console.log(`Added to cart: ${product.name}, Size: ${selectedSize}, Color: ${selectedColor}`);
+
+    const cartData = localStorage.getItem('cart');
+    const cart = cartData ? JSON.parse(cartData) : { items: [] };
+
+    const existingItemIndex = cart.items.findIndex(
+      (item: CartItem) => item.id === product.id && item.size === selectedSize && item.color === selectedColor
+    );
+
+    if (existingItemIndex > -1) {
+      cart.items[existingItemIndex].quantity += 1;
+    } else {
+      cart.items.push({ ...product, quantity: 1, size: selectedSize, color: selectedColor });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    // Dispatch a storage event to update the header
+    window.dispatchEvent(new Event('storage'));
+
     toast({
       title: "Added to Cart",
       description: `${product.name} (${selectedColor}, ${selectedSize}) has been added to your cart.`,

@@ -1,13 +1,12 @@
 // src/app/cart/page.tsx
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { products } from '@/lib/data';
 import type { Product } from '@/lib/types';
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { PaymentOptions } from '@/components/payment-options';
@@ -16,31 +15,44 @@ import { Input } from '@/components/ui/input';
 import { useRouter } from 'next/navigation';
 import { Label } from '@/components/ui/label';
 
-// Mock cart data for demonstration
-const initialCartItems = [
-  { ...products.find(p => p.id === 'p1')!, quantity: 1 },
-  { ...products.find(p => p.id === 'p5')!, quantity: 2 },
-  { ...products.find(p => p.id === 'p7')!, quantity: 1 },
-];
+type CartItem = Product & { quantity: number; size: string; color: string; };
 
 export default function CartPage() {
-  const [cartItems, setCartItems] = useState(initialCartItems);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [location, setLocation] = useState('');
   const router = useRouter();
 
-  const handleQuantityChange = (productId: string, newQuantity: number) => {
+  useEffect(() => {
+    const storedCart = localStorage.getItem('cart');
+    if (storedCart) {
+      const parsedCart = JSON.parse(storedCart);
+      if(Array.isArray(parsedCart.items)) {
+         setCartItems(parsedCart.items);
+      }
+    }
+  }, []);
+
+  const updateCart = (newCartItems: CartItem[]) => {
+    setCartItems(newCartItems);
+    localStorage.setItem('cart', JSON.stringify({ items: newCartItems }));
+     // Dispatch a storage event to update the header
+    window.dispatchEvent(new Event('storage'));
+  };
+
+  const handleQuantityChange = (productId: string, size: string, color: string, newQuantity: number) => {
     if (newQuantity < 1) {
-      // Remove item if quantity is less than 1
-      setCartItems(cartItems.filter(item => item.id !== productId));
+      removeItem(productId, size, color);
     } else {
-      setCartItems(cartItems.map(item =>
-        item.id === productId ? { ...item, quantity: newQuantity } : item
-      ));
+      const newCartItems = cartItems.map(item =>
+        item.id === productId && item.size === size && item.color === color ? { ...item, quantity: newQuantity } : item
+      );
+      updateCart(newCartItems);
     }
   };
 
-  const removeItem = (productId: string) => {
-    setCartItems(cartItems.filter(item => item.id !== productId));
+  const removeItem = (productId: string, size: string, color: string) => {
+    const newCartItems = cartItems.filter(item => !(item.id === productId && item.size === size && item.color === color));
+    updateCart(newCartItems);
   };
   
   const handleLocationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,9 +62,6 @@ export default function CartPage() {
   const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   const handlePaymentSuccess = () => {
-    // In a real app, you would handle payment processing here.
-    // On success, you would then redirect.
-    // For this demo, we'll just redirect to a confirmation page.
     localStorage.setItem('cart', JSON.stringify({ items: cartItems, total, location }));
     router.push('/confirmation');
   };
@@ -76,7 +85,7 @@ export default function CartPage() {
               <CardContent className="p-0">
                 <ul className="divide-y divide-border">
                   {cartItems.map(item => (
-                    <li key={item.id} className="flex items-center p-4 sm:p-6">
+                    <li key={`${item.id}-${item.size}-${item.color}`} className="flex items-center p-4 sm:p-6">
                       <Image
                         src={item.image}
                         alt={item.name}
@@ -86,21 +95,22 @@ export default function CartPage() {
                         className="rounded-md object-cover mr-6"
                       />
                       <div className="flex-grow">
-                        <Link href="#" className="font-semibold hover:text-primary">{item.name}</Link>
+                        <Link href={`/products/${item.id}`} className="font-semibold hover:text-primary">{item.name}</Link>
                         <p className="text-sm text-muted-foreground">GH₵{item.price.toFixed(2)}</p>
+                        <p className="text-sm text-muted-foreground">Size: {item.size}, Color: {item.color}</p>
                          <div className="flex items-center gap-2 mt-2">
-                            <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => handleQuantityChange(item.id, item.quantity - 1)}>
+                            <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => handleQuantityChange(item.id, item.size, item.color, item.quantity - 1)}>
                                 <Minus className="h-4 w-4" />
                             </Button>
                             <Input type="number" value={item.quantity} readOnly className="h-8 w-14 text-center" />
-                             <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => handleQuantityChange(item.id, item.quantity + 1)}>
+                             <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => handleQuantityChange(item.id, item.size, item.color, item.quantity + 1)}>
                                 <Plus className="h-4 w-4" />
                             </Button>
                         </div>
                       </div>
                       <div className="text-right">
                         <p className="font-semibold">GH₵{(item.price * item.quantity).toFixed(2)}</p>
-                        <Button variant="ghost" size="icon" className="mt-2 text-muted-foreground hover:text-destructive" onClick={() => removeItem(item.id)}>
+                        <Button variant="ghost" size="icon" className="mt-2 text-muted-foreground hover:text-destructive" onClick={() => removeItem(item.id, item.size, item.color)}>
                             <Trash2 className="h-5 w-5" />
                         </Button>
                       </div>
@@ -131,7 +141,7 @@ export default function CartPage() {
               <CardFooter>
                  <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <Button className="w-full" size="lg" disabled={!location}>Confirm my purchase</Button>
+                    <Button className="w-full" size="lg" disabled={!location || cartItems.length === 0}>Confirm my purchase</Button>
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
