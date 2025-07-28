@@ -59,7 +59,7 @@ export default function ContactPage() {
               <div>
                 <h3 className="text-xl font-semibold">Our Location</h3>
                 <p className="text-muted-foreground">
-                  123 Maverik Lane, Accra, Ghana
+                  Accra, Ghana
                 </p>
               </div>
             </div>
