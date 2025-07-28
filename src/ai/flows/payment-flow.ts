@@ -10,10 +10,10 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
-import Paystack from 'paystack-sdk';
+import * as Paystack from 'paystack-sdk';
 
 const InitializePaymentInputSchema = z.object({
-  email: z.string().email().describe('The customer\'s email address.'),
+  email: z.string().email().describe("The customer's email address."),
   amount: z.number().positive().describe('The amount to be paid in the lowest currency unit (e.g., pesewas).'),
 });
 export type InitializePaymentInput = z.infer<typeof InitializePaymentInputSchema>;
@@ -27,7 +27,7 @@ export type InitializePaymentOutput = z.infer<typeof InitializePaymentOutputSche
 
 // IMPORTANT: You must add your Paystack secret key to your .env file
 // as PAYSTACK_SECRET_KEY to enable real transactions.
-const paystack = new Paystack(process.env.PAYSTACK_SECRET_KEY || 'YOUR_PAYSTACK_SECRET_KEY');
+const paystack = new (Paystack as any)(process.env.PAYSTACK_SECRET_KEY || 'YOUR_PAYSTACK_SECRET_KEY');
 
 
 export async function initializePayment(
