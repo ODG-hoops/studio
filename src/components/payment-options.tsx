@@ -10,9 +10,9 @@ import { Label } from "./ui/label";
 
 export function PaymentOptions({ onPaymentSuccess }: { onPaymentSuccess: () => void }) {
   const bankLogos = {
-    'Ghana Commercial Bank': 'https://placehold.co/100x40.png',
-    'Ecobank': 'https://placehold.co/100x40.png',
-    'Universal Merchant Bank': 'https://placehold.co/100x40.png',
+    'Ghana Commercial Bank': 'https://via.placeholder.com/100x40',
+    'Ecobank': 'https://via.placeholder.com/100x40',
+    'Universal Merchant Bank': 'https://via.placeholder.com/100x40',
   };
 
   const handlePayment = (method: string) => {

@@ -6,7 +6,7 @@ export function HeroSection() {
   return (
     <section className="relative h-[80vh] md:h-screen w-full flex items-center justify-center text-center text-white overflow-hidden">
       <Image
-        src="https://placehold.co/1920x1080"
+        src="https://via.placeholder.com/1920x1080"
         alt="A stylish model wearing modern, elegant clothing from Style Maverik"
         data-ai-hint="fashion model"
         fill
