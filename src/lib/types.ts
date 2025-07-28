@@ -4,6 +4,6 @@ export type Product = {
   price: number;
   image: string;
   imageHint: string;
-  category: 'Men' | 'Women' | 'Unisex' | 'Accessories';
+  category: 'Hoodies' | 'Sweatshirts' | 'Cotton T-Shirts' | 'Jersey' | 'Croptop' | 'Accessories';
   description: string;
 };

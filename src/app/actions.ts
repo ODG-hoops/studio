@@ -23,9 +23,9 @@ export async function fetchRecommendations(
   try {
     // The actual AI call is commented out to allow the app to run without a live Genkit environment.
     // In a real deployment, you would uncomment this line and remove the mock call.
-    // return await getPersonalizedRecommendations(input);
+    return await getPersonalizedRecommendations(input);
 
-    return await getMockRecommendations(input);
+    // return await getMockRecommendations(input);
   } catch (error) {
     console.error('Error fetching recommendations:', error);
     // Fallback to mock on error

@@ -14,7 +14,7 @@ import {z} from 'genkit';
 const PersonalizedRecommendationsInputSchema = z.object({
   browsingHistory: z
     .array(z.string())
-    .describe('An array of product IDs representing the user\'s browsing history.'),
+    .describe("An array of product IDs representing the user's browsing history."),
 });
 export type PersonalizedRecommendationsInput = z.infer<
   typeof PersonalizedRecommendationsInputSchema
@@ -47,4 +47,17 @@ const personalizedRecommendationsPrompt = ai.definePrompt({
 
 Browsing History: {{browsingHistory}}
 
-Recommendations:`, // Ensure it's 
+Recommendations:`,
+});
+
+const personalizedRecommendationsFlow = ai.defineFlow(
+  {
+    name: 'personalizedRecommendationsFlow',
+    inputSchema: PersonalizedRecommendationsInputSchema,
+    outputSchema: PersonalizedRecommendationsOutputSchema,
+  },
+  async input => {
+    const {output} = await prompt(input);
+    return output!;
+  }
+);
