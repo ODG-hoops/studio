@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import type { Product } from '@/lib/types';
-import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger, AlertDialogDescription, AlertDialogCancel } from '@/components/ui/alert-dialog';
 import { PaymentOptions } from '@/components/payment-options';
 import { Minus, Plus, Trash2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -68,7 +68,11 @@ export default function CartPage() {
   const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   const handlePaymentSuccess = () => {
-    localStorage.setItem('cart', JSON.stringify({ items: cartItems, total, location }));
+    // Clear the cart items but keep location and total for the confirmation page
+    const orderDetails = { items: cartItems, total, location };
+    localStorage.setItem('order_confirmation', JSON.stringify(orderDetails));
+    localStorage.removeItem('cart');
+    updateCart([]); // Update state and trigger re-render
     router.push('/confirmation');
   };
 
@@ -151,9 +155,16 @@ export default function CartPage() {
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
-                      <AlertDialogTitle>Select Payment Method</AlertDialogTitle>
+                      <AlertDialogTitle>Confirm Purchase</AlertDialogTitle>
+                       <AlertDialogDescription>
+                        To complete your purchase, please provide your email address and proceed to the secure payment page.
+                      </AlertDialogDescription>
                     </AlertDialogHeader>
-                    <PaymentOptions onPaymentSuccess={handlePaymentSuccess} />
+                    <PaymentOptions 
+                      amount={total * 100} // Paystack expects amount in pesewas
+                      onPaymentSuccess={handlePaymentSuccess} 
+                    />
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
                   </AlertDialogContent>
                 </AlertDialog>
               </CardFooter>

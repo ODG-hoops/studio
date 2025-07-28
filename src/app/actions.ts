@@ -2,6 +2,8 @@
 
 import { getPersonalizedRecommendations } from '@/ai/flows/personalized-recommendations';
 import type { PersonalizedRecommendationsInput, PersonalizedRecommendationsOutput } from '@/ai/flows/personalized-recommendations';
+import { initializePayment } from '@/ai/flows/payment-flow';
+import type { InitializePaymentInput, InitializePaymentOutput } from '@/ai/flows/payment-flow';
 import { products } from '@/lib/data';
 
 // This is a mock implementation because the genkit flow cannot be executed here.
@@ -31,4 +33,17 @@ export async function fetchRecommendations(
     // Fallback to mock on error
     return getMockRecommendations(input);
   }
+}
+
+export async function handlePaymentInitialization(input: InitializePaymentInput): Promise<{ checkoutUrl: string | null; error: string | null; }> {
+    try {
+        const response = await initializePayment(input);
+        if (response && response.authorization_url) {
+            return { checkoutUrl: response.authorization_url, error: null };
+        }
+        return { checkoutUrl: null, error: 'Failed to get authorization URL.' };
+    } catch (error) {
+        console.error('Payment Initialization Error:', error);
+        return { checkoutUrl: null, error: 'Failed to initialize payment.' };
+    }
 }

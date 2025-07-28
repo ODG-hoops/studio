@@ -1,102 +1,86 @@
 // src/components/payment-options.tsx
 'use client';
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { useState } from 'react';
 import { Button } from "./ui/button";
-import { CreditCard, Landmark, Phone, Wallet } from "lucide-react";
-import { AlertDialogFooter, AlertDialogCancel } from "./ui/alert-dialog";
+import { CreditCard, Loader2 } from "lucide-react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
+import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
+import { handlePaymentInitialization } from '@/app/actions';
 
-export function PaymentOptions({ onPaymentSuccess }: { onPaymentSuccess: () => void }) {
-  const bankLogos = {
-    'Ghana Commercial Bank': 'https://via.placeholder.com/100x40',
-    'Ecobank': 'https://via.placeholder.com/100x40',
-    'Universal Merchant Bank': 'https://via.placeholder.com/100x40',
-  };
+export function PaymentOptions({ amount, onPaymentSuccess }: { amount: number, onPaymentSuccess: () => void }) {
+  const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+  const router = useRouter();
 
-  const handlePayment = (method: string) => {
-    console.log(`Processing payment with ${method}`);
-    // Simulate API call
-    setTimeout(() => {
-      onPaymentSuccess();
-    }, 1000);
+  const handlePayment = async () => {
+    if (!email) {
+      toast({
+        title: "Email Required",
+        description: "Please enter your email address to proceed.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    setIsLoading(true);
+
+    try {
+      const result = await handlePaymentInitialization({ email, amount });
+
+      if (result.error) {
+        throw new Error(result.error);
+      }
+
+      if (result.checkoutUrl) {
+        // Before redirecting, we can call onPaymentSuccess to prepare the confirmation page data
+        onPaymentSuccess();
+        // Redirect to Paystack's checkout page
+        router.push(result.checkoutUrl);
+      } else {
+        throw new Error('Could not retrieve checkout URL.');
+      }
+
+    } catch (error) {
+      console.error("Payment failed", error);
+      toast({
+        title: "Payment Failed",
+        description: (error as Error).message || "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+      setIsLoading(false);
+    }
   };
 
   return (
-    <Accordion type="single" collapsible className="w-full">
-      <AccordionItem value="momo">
-        <AccordionTrigger>
-          <div className="flex items-center gap-3">
-             <Phone className="h-5 w-5" />
-             <span>Mobile Money (MTN, Telecel)</span>
-          </div>
-        </AccordionTrigger>
-        <AccordionContent className="p-4 bg-muted/50 rounded-md space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="momo-number">Phone Number</Label>
-            <Input id="momo-number" placeholder="024 123 4567" />
-          </div>
-          <Button className="w-full" onClick={() => handlePayment('Mobile Money')}>Pay with MoMo</Button>
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem value="bank-transfer">
-        <AccordionTrigger>
-           <div className="flex items-center gap-3">
-            <Landmark className="h-5 w-5" />
-            <span>Bank Transfer</span>
-          </div>
-        </AccordionTrigger>
-        <AccordionContent className="p-4 bg-muted/50 rounded-md space-y-4">
-            <p className="text-sm">Select your bank and follow the instructions to complete the transfer.</p>
-            <div className="flex flex-wrap gap-2">
-               {Object.entries(bankLogos).map(([bank, logo]) => (
-                 <Button key={bank} variant="outline" className="h-12 flex-grow" onClick={() => handlePayment(bank)}>
-                   <span>{bank}</span>
-                 </Button>
-               ))}
-            </div>
-        </AccordionContent>
-      </AccordionItem>
-       <AccordionItem value="paypal">
-        <AccordionTrigger>
-          <div className="flex items-center gap-3">
-            <Wallet className="h-5 w-5" />
-            <span>PayPal</span>
-          </div>
-        </AccordionTrigger>
-        <AccordionContent className="p-4 bg-muted/50 rounded-md">
-            <Button className="w-full" onClick={() => handlePayment('PayPal')}>Proceed with PayPal</Button>
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem value="card">
-        <AccordionTrigger>
-          <div className="flex items-center gap-3">
-            <CreditCard className="h-5 w-5" />
-            <span>Credit/Debit Card</span>
-          </div>
-        </AccordionTrigger>
-        <AccordionContent className="p-4 bg-muted/50 rounded-md space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="card-number">Card Number</Label>
-            <Input id="card-number" placeholder="**** **** **** ****" />
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-             <div className="space-y-2">
-              <Label htmlFor="expiry">Expiry Date</Label>
-              <Input id="expiry" placeholder="MM/YY" />
-            </div>
-             <div className="space-y-2">
-              <Label htmlFor="cvc">CVC</Label>
-              <Input id="cvc" placeholder="123" />
-            </div>
-          </div>
-           <Button className="w-full" onClick={() => handlePayment('Credit Card')}>Pay Now</Button>
-        </AccordionContent>
-      </AccordionItem>
-      <AlertDialogFooter className="mt-4">
-        <AlertDialogCancel>Cancel</AlertDialogCancel>
-      </AlertDialogFooter>
-    </Accordion>
+    <div className="w-full space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="email">Email Address</Label>
+        <Input 
+          id="email" 
+          type="email" 
+          placeholder="you@example.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          disabled={isLoading}
+        />
+      </div>
+      <Button className="w-full" onClick={handlePayment} disabled={isLoading || !email}>
+        {isLoading ? (
+          <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Processing...
+          </>
+        ) : (
+          <>
+            <CreditCard className="mr-2 h-5 w-5" />
+            Proceed to Pay GH₵{(amount / 100).toFixed(2)}
+          </>
+        )}
+      </Button>
+    </div>
   );
 }

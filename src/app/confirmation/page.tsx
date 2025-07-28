@@ -16,14 +16,25 @@ export default function ConfirmationPage() {
   const router = useRouter();
 
   useEffect(() => {
-    const storedCart = localStorage.getItem('cart');
-    if (storedCart) {
-      setOrder(JSON.parse(storedCart));
+    const storedOrder = localStorage.getItem('order_confirmation');
+    if (storedOrder) {
+      setOrder(JSON.parse(storedOrder));
+      // Optionally clear the stored order after displaying it
+      localStorage.removeItem('order_confirmation');
     } else {
-      // Redirect to home if no cart data is found
+      // If no order data, maybe they landed here by mistake.
+      // Redirect to home if no order data is found
       router.push('/');
     }
   }, [router]);
+
+  // This useEffect will run when the page is visited, which happens after Paystack redirects back.
+  // We can finalize the process here if needed, like clearing the main cart.
+  useEffect(() => {
+    localStorage.removeItem('cart');
+    // Dispatch a storage event to update the header cart count to 0
+    window.dispatchEvent(new Event('storage'));
+  }, []);
 
   if (!order) {
     return (
