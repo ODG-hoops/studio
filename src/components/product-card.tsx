@@ -27,7 +27,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
           <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
             <h3 className="font-semibold truncate">{product.name}</h3>
-            <p className="text-sm text-primary">${product.price.toFixed(2)}</p>
+            <p className="text-sm text-primary">GH₵{product.price.toFixed(2)}</p>
           </div>
           <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
             <Button size="icon" variant="secondary" aria-label="Add to cart">
