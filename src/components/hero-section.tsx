@@ -7,8 +7,8 @@ export function HeroSection() {
     <section className="relative h-[80vh] md:h-screen w-full flex items-center justify-center text-center text-white overflow-hidden">
       <Image
         src="https://placehold.co/1920x1080"
-        alt="A person wearing a Maverik sweatshirt looking out over a landscape"
-        data-ai-hint="fashion outdoors"
+        alt="A stylish model wearing modern, elegant clothing from Style Maverik"
+        data-ai-hint="fashion model"
         fill
         className="absolute top-0 left-0 w-full h-full object-cover -z-10"
         priority
