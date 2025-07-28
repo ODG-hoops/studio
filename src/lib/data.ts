@@ -31,7 +31,7 @@ export const products: Product[] = [
     imageHint: 'crewneck sweatshirt',
     category: 'Sweatshirts',
     description: 'A classic sweatshirt with the 21st SM logo, perfect for a casual look.',
-    colors: ['Grey', 'Black', 'Cream', 'Blue'],
+    colors: ['White', 'Blue', 'Black', 'Blue-black', 'Pink', 'Green', 'Red', 'Orange', 'Purple', 'Cream', 'Grey'],
     sizes: ['S', 'M', 'X', 'XX', 'XXX'],
   },
   {
@@ -42,7 +42,7 @@ export const products: Product[] = [
     imageHint: 'designer sweatshirt',
     category: 'Sweatshirts',
     description: 'Showcase your style with the Tripple Cross sweatshirt.',
-    colors: ['Black', 'Blue-black', 'White'],
+    colors: ['White', 'Blue', 'Black', 'Blue-black', 'Pink', 'Green', 'Red', 'Orange', 'Purple', 'Cream', 'Grey'],
     sizes: ['S', 'M', 'X', 'XX', 'XXX'],
   },
   {
@@ -53,7 +53,7 @@ export const products: Product[] = [
     imageHint: 'cotton t-shirt',
     category: 'Cotton T-Shirts',
     description: 'A high-quality cotton t-shirt with the 21st SM print.',
-    colors: ['White', 'Black', 'Green', 'Orange'],
+    colors: ['White', 'Blue', 'Black', 'Blue-black', 'Pink', 'Green', 'Red', 'Orange', 'Purple', 'Cream', 'Grey'],
     sizes: ['S', 'M', 'X', 'XX', 'XXX'],
   },
   {
@@ -64,7 +64,7 @@ export const products: Product[] = [
     imageHint: 'graphic t-shirt',
     category: 'Cotton T-Shirts',
     description: 'A bold statement t-shirt featuring the Tripple Cross graphic.',
-    colors: ['Black', 'Red', 'White', 'Purple'],
+    colors: ['White', 'Blue', 'Black', 'Blue-black', 'Pink', 'Green', 'Red', 'Orange', 'Purple', 'Cream', 'Grey'],
     sizes: ['S', 'M', 'X', 'XX', 'XXX'],
   },
   {
