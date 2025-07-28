@@ -31,7 +31,7 @@ export function Footer() {
               <h4 className="font-semibold">About</h4>
               <ul className="mt-4 space-y-2 text-sm">
                 <li><Link href="/about" className="text-muted-foreground hover:text-primary">Our Story</Link></li>
-                <li><Link href="#" className="text-muted-foreground hover:text-primary">Contact</Link></li>
+                <li><Link href="/contact" className="text-muted-foreground hover:text-primary">Contact</Link></li>
                 <li><Link href="#" className="text-muted-foreground hover:text-primary">Sustainability</Link></li>
               </ul>
             </div>
