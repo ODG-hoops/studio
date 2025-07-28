@@ -29,8 +29,8 @@ export default function ContactPage() {
                 <p className="text-muted-foreground">
                   Send us an email and we'll get back to you shortly.
                 </p>
-                <a href="mailto:support@stylemaverik.com" className="text-primary hover:underline mt-1 block">
-                  support@stylemaverik.com
+                <a href="mailto:stylemaverikclothing@gmail.com" className="text-primary hover:underline mt-1 block">
+                  stylemaverikclothing@gmail.com
                 </a>
               </div>
             </div>
