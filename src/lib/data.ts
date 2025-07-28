@@ -13,7 +13,7 @@ export const products: Product[] = [
   {
     id: 'p2',
     name: 'Tripple Cross Hoodie',
-    price: 300,
+    price: 250,
     image: 'https://placehold.co/600x800',
     imageHint: 'graphic hoodie',
     category: 'Hoodies',
@@ -76,7 +76,7 @@ export const products: Product[] = [
   {
     id: 'p9',
     name: 'SM Crop Tees',
-    price: 250,
+    price: 200,
     image: 'https://placehold.co/600x800',
     imageHint: 'crop top',
     category: 'Croptop',
