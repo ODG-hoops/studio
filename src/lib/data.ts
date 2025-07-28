@@ -9,6 +9,8 @@ export const products: Product[] = [
     imageHint: 'black hoodie',
     category: 'Hoodies',
     description: 'A comfortable and stylish hoodie featuring the 21st SM design.',
+    colors: ['Black', 'Gray', 'Navy'],
+    sizes: ['S', 'M', 'L', 'XL'],
   },
   {
     id: 'p2',
@@ -18,6 +20,8 @@ export const products: Product[] = [
     imageHint: 'graphic hoodie',
     category: 'Hoodies',
     description: 'A premium hoodie with the iconic Tripple Cross design.',
+    colors: ['Black', 'White', 'Maroon'],
+    sizes: ['S', 'M', 'L', 'XL'],
   },
   {
     id: 'p3',
@@ -27,6 +31,8 @@ export const products: Product[] = [
     imageHint: 'crewneck sweatshirt',
     category: 'Sweatshirts',
     description: 'A classic sweatshirt with the 21st SM logo, perfect for a casual look.',
+    colors: ['Heather Gray', 'Black'],
+    sizes: ['S', 'M', 'L', 'XL'],
   },
   {
     id: 'p4',
@@ -36,6 +42,8 @@ export const products: Product[] = [
     imageHint: 'designer sweatshirt',
     category: 'Sweatshirts',
     description: 'Showcase your style with the Tripple Cross sweatshirt.',
+    colors: ['Charcoal', 'Navy'],
+    sizes: ['M', 'L', 'XL', 'XXL'],
   },
   {
     id: 'p5',
@@ -45,6 +53,8 @@ export const products: Product[] = [
     imageHint: 'cotton t-shirt',
     category: 'Cotton T-Shirts',
     description: 'A high-quality cotton t-shirt with the 21st SM print.',
+    colors: ['White', 'Black', 'Olive'],
+    sizes: ['S', 'M', 'L'],
   },
   {
     id: 'p6',
@@ -54,6 +64,8 @@ export const products: Product[] = [
     imageHint: 'graphic t-shirt',
     category: 'Cotton T-Shirts',
     description: 'A bold statement t-shirt featuring the Tripple Cross graphic.',
+    colors: ['Black', 'Red', 'White'],
+    sizes: ['S', 'M', 'L', 'XL'],
   },
   {
     id: 'p7',
@@ -63,6 +75,8 @@ export const products: Product[] = [
     imageHint: 'sports jersey',
     category: 'Jersey',
     description: 'The official SM Prelude Jersey, designed for performance and style.',
+    colors: ['Blue/White', 'Black/Gold'],
+    sizes: ['M', 'L', 'XL'],
   },
   {
     id: 'p8',
@@ -72,6 +86,8 @@ export const products: Product[] = [
     imageHint: 'athletic jersey',
     category: 'Jersey',
     description: 'The limited Second Edition SM Jersey, a must-have for collectors.',
+    colors: ['Red/Black', 'White/Silver'],
+    sizes: ['S', 'M', 'L', 'XL'],
   },
   {
     id: 'p9',
@@ -81,5 +97,7 @@ export const products: Product[] = [
     imageHint: 'crop top',
     category: 'Croptop',
     description: 'A trendy and comfortable crop tee for a stylish look.',
+    colors: ['Pink', 'White', 'Black'],
+    sizes: ['XS', 'S', 'M'],
   },
 ];

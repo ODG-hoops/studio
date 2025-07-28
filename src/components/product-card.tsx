@@ -12,7 +12,7 @@ interface ProductCardProps {
 export function ProductCard({ product }: ProductCardProps) {
   return (
     <Card className="group relative w-full overflow-hidden rounded-lg border-0 shadow-lg transition-all duration-300 hover:shadow-primary/20">
-      <Link href="#">
+      <Link href={`/products/${product.id}`}>
         <CardContent className="p-0">
           <div className="aspect-[3/4] overflow-hidden">
             <Image
@@ -29,9 +29,11 @@ export function ProductCard({ product }: ProductCardProps) {
             <h3 className="font-semibold truncate">{product.name}</h3>
             <p className="text-sm text-primary">GH₵{product.price.toFixed(2)}</p>
           </div>
-          <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-            <Button size="icon" variant="secondary" aria-label="Add to cart">
-              <ShoppingCart className="h-5 w-5"/>
+           <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+             <Button size="icon" variant="secondary" asChild>
+                <div  aria-label="View Details">
+                   <ShoppingCart className="h-5 w-5"/>
+                </div>
             </Button>
           </div>
         </CardContent>

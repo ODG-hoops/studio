@@ -6,4 +6,6 @@ export type Product = {
   imageHint: string;
   category: 'Hoodies' | 'Sweatshirts' | 'Cotton T-Shirts' | 'Jersey' | 'Croptop' | 'Accessories';
   description: string;
+  colors: string[];
+  sizes: string[];
 };
