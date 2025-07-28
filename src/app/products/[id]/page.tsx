@@ -17,7 +17,8 @@ type CartItem = Product & { quantity: number; size: string; color: string; };
 
 export default function ProductDetailPage({ params }: { params: { id: string } }) {
   const { toast } = useToast();
-  const product = products.find(p => p.id === params.id);
+  const productId = params.id;
+  const product = products.find(p => p.id === productId);
 
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
