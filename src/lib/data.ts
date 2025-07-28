@@ -9,7 +9,7 @@ export const products: Product[] = [
     imageHint: 'black hoodie',
     category: 'Hoodies',
     description: 'A comfortable and stylish hoodie featuring the 21st SM design.',
-    colors: ['Black', 'Grey', 'Blue', 'Green'],
+    colors: ['White', 'Blue', 'Black', 'Blue-black', 'Pink', 'Green', 'Red', 'Orange', 'Purple', 'Cream', 'Grey'],
     sizes: ['S', 'M', 'X', 'XX', 'XXX'],
   },
   {
@@ -20,7 +20,7 @@ export const products: Product[] = [
     imageHint: 'graphic hoodie',
     category: 'Hoodies',
     description: 'A premium hoodie with the iconic Tripple Cross design.',
-    colors: ['Black', 'White', 'Red', 'Blue-black'],
+    colors: ['White', 'Blue', 'Black', 'Blue-black', 'Pink', 'Green', 'Red', 'Orange', 'Purple', 'Cream', 'Grey'],
     sizes: ['S', 'M', 'X', 'XX', 'XXX'],
   },
   {
