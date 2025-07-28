@@ -7,12 +7,10 @@ type CartItem = Product & { quantity: number };
 interface ReceiptProps {
   items: CartItem[];
   total: number;
-  shipping: number;
+  location: string;
 }
 
-export function Receipt({ items, total, shipping }: ReceiptProps) {
-  const subtotal = total - shipping;
-
+export function Receipt({ items, total, location }: ReceiptProps) {
   return (
     <div className="border rounded-lg p-6 bg-muted/20">
       <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
@@ -27,17 +25,17 @@ export function Receipt({ items, total, shipping }: ReceiptProps) {
       <Separator className="my-4" />
       <div className="space-y-2 text-sm">
         <div className="flex justify-between">
-          <span className="text-muted-foreground">Subtotal</span>
-          <span>GH₵{subtotal.toFixed(2)}</span>
+          <span className="text-muted-foreground">Delivery Location</span>
+          <span>{location}</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-muted-foreground">Shipping</span>
-          <span>GH₵{shipping.toFixed(2)}</span>
+          <span className="text-muted-foreground">Delivery Fee</span>
+          <span className="font-medium">To be determined</span>
         </div>
       </div>
       <Separator className="my-4" />
       <div className="flex justify-between font-bold text-lg">
-        <span>Total</span>
+        <span>Total (excluding delivery)</span>
         <span>GH₵{total.toFixed(2)}</span>
       </div>
     </div>

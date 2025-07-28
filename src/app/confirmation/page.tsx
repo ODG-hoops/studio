@@ -12,7 +12,7 @@ import { CheckCircle } from 'lucide-react';
 type CartItem = Product & { quantity: number };
 
 export default function ConfirmationPage() {
-  const [order, setOrder] = useState<{ items: CartItem[]; total: number, shipping: number } | null>(null);
+  const [order, setOrder] = useState<{ items: CartItem[]; total: number, location: string } | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function ConfirmationPage() {
           </p>
         </CardHeader>
         <CardContent>
-          <Receipt items={order.items} total={order.total} shipping={order.shipping} />
+          <Receipt items={order.items} total={order.total} location={order.location} />
           <div className="mt-8 flex justify-center gap-4">
             <Button onClick={() => router.push('/collections')}>Continue Shopping</Button>
             <Button variant="outline" onClick={() => window.print()}>Print Receipt</Button>
