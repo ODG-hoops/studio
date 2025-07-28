@@ -45,8 +45,8 @@ export default function ContactPage() {
                 <p className="text-muted-foreground">
                   Give us a call during our business hours.
                 </p>
-                <a href="tel:+233241234567" className="text-primary hover:underline mt-1 block">
-                  +233 24 123 4567
+                <a href="tel:+233598663290" className="text-primary hover:underline mt-1 block">
+                  +233 59 866 3290
                 </a>
               </div>
             </div>
