@@ -12,7 +12,7 @@ export function Footer() {
             <h3 className="font-bold text-lg tracking-wider text-primary">STYLE MAVERIK</h3>
             <p className="mt-2 text-sm text-muted-foreground">Redefining Modern Elegance.</p>
             <div className="flex space-x-4 mt-4">
-              <Link href="#" aria-label="Instagram"><Instagram className="h-5 w-5 hover:text-primary transition-colors" /></Link>
+              <Link href="https://www.instagram.com/stylemaverik_clothing" aria-label="Instagram"><Instagram className="h-5 w-5 hover:text-primary transition-colors" /></Link>
               <Link href="#" aria-label="Twitter"><Twitter className="h-5 w-5 hover:text-primary transition-colors" /></Link>
               <Link href="#" aria-label="Facebook"><Facebook className="h-5 w-5 hover:text-primary transition-colors" /></Link>
             </div>
