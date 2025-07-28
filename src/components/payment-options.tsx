@@ -3,7 +3,7 @@
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "./ui/button";
-import { CreditCard, Landmark, Phone, Paypal } from "lucide-react";
+import { CreditCard, Landmark, Phone, Wallet } from "lucide-react";
 
 export function PaymentOptions() {
   const bankLogos = {
@@ -47,7 +47,7 @@ export function PaymentOptions() {
        <AccordionItem value="paypal">
         <AccordionTrigger>
           <div className="flex items-center gap-3">
-            <Paypal className="h-5 w-5" />
+            <Wallet className="h-5 w-5" />
             <span>PayPal</span>
           </div>
         </AccordionTrigger>
