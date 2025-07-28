@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
 
 export default function ContactPage() {
   return (
@@ -72,12 +73,15 @@ export default function ContactPage() {
             <CardContent>
               <form className="space-y-4">
                 <div className="space-y-2">
+                  <Label htmlFor="name">Name</Label>
                   <Input id="name" placeholder="Your Name" />
                 </div>
                 <div className="space-y-2">
+                  <Label htmlFor="email">Email</Label>
                   <Input id="email" type="email" placeholder="Your Email" />
                 </div>
                 <div className="space-y-2">
+                   <Label htmlFor="message">Message</Label>
                   <Textarea id="message" placeholder="Your Message" rows={5} />
                 </div>
                 <Button type="submit" className="w-full">

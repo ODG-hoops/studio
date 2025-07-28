@@ -25,9 +25,15 @@ export default function CartPage() {
   useEffect(() => {
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
-      const parsedCart = JSON.parse(storedCart);
-      if(Array.isArray(parsedCart.items)) {
-         setCartItems(parsedCart.items);
+      try {
+        const parsedCart = JSON.parse(storedCart);
+        if(Array.isArray(parsedCart.items)) {
+           setCartItems(parsedCart.items);
+        }
+      } catch (error) {
+        console.error("Failed to parse cart from localStorage", error);
+        setCartItems([]);
+        localStorage.removeItem('cart');
       }
     }
   }, []);

@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { notFound, useParams } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import { products } from '@/lib/data';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -15,9 +15,8 @@ import type { Product } from '@/lib/types';
 
 type CartItem = Product & { quantity: number; size: string; color: string; };
 
-export default function ProductDetailPage() {
+export default function ProductDetailPage({ params }: { params: { id: string } }) {
   const { toast } = useToast();
-  const params = useParams();
   const product = products.find(p => p.id === params.id);
 
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
