@@ -7,10 +7,10 @@ type CartItem = Product & { quantity: number };
 interface ReceiptProps {
   items: CartItem[];
   total: number;
+  shipping: number;
 }
 
-export function Receipt({ items, total }: ReceiptProps) {
-  const shipping = 50; // Example shipping cost, should match cart
+export function Receipt({ items, total, shipping }: ReceiptProps) {
   const subtotal = total - shipping;
 
   return (

@@ -14,6 +14,7 @@ import { PaymentOptions } from '@/components/payment-options';
 import { Minus, Plus, Trash2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { useRouter } from 'next/navigation';
+import { Label } from '@/components/ui/label';
 
 // Mock cart data for demonstration
 const initialCartItems = [
@@ -24,6 +25,8 @@ const initialCartItems = [
 
 export default function CartPage() {
   const [cartItems, setCartItems] = useState(initialCartItems);
+  const [location, setLocation] = useState('');
+  const [shipping, setShipping] = useState(0);
   const router = useRouter();
 
   const handleQuantityChange = (productId: string, newQuantity: number) => {
@@ -41,15 +44,28 @@ export default function CartPage() {
     setCartItems(cartItems.filter(item => item.id !== productId));
   };
   
+  const handleLocationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newLocation = e.target.value;
+    setLocation(newLocation);
+    // Simulated delivery fee calculation
+    if (newLocation.trim().toLowerCase().includes('accra')) {
+        setShipping(50);
+    } else if (newLocation.trim() === '') {
+        setShipping(0);
+    } 
+    else {
+        setShipping(100);
+    }
+  };
+
   const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  const shipping = 50; // Example shipping cost
   const total = subtotal + shipping;
 
   const handlePaymentSuccess = () => {
     // In a real app, you would handle payment processing here.
     // On success, you would then redirect.
     // For this demo, we'll just redirect to a confirmation page.
-    localStorage.setItem('cart', JSON.stringify({ items: cartItems, total }));
+    localStorage.setItem('cart', JSON.stringify({ items: cartItems, total, shipping }));
     router.push('/confirmation');
   };
 
@@ -113,13 +129,18 @@ export default function CartPage() {
                 <CardTitle>Order Summary</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
+                 <div className="space-y-2">
+                    <Label htmlFor="location">Delivery Location</Label>
+                    <Input id="location" placeholder="e.g., East Legon, Accra" value={location} onChange={handleLocationChange} />
+                    <p className="text-xs text-muted-foreground">Delivery fee is based on your location.</p>
+                 </div>
                 <div className="flex justify-between">
                   <span>Subtotal</span>
                   <span>GH₵{subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Shipping</span>
-                  <span>GH₵{shipping.toFixed(2)}</span>
+                  <span>{shipping > 0 ? `GH₵${shipping.toFixed(2)}` : 'Enter location'}</span>
                 </div>
                 <Separator />
                 <div className="flex justify-between font-bold text-lg">
@@ -130,7 +151,7 @@ export default function CartPage() {
               <CardFooter>
                  <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <Button className="w-full" size="lg">Confirm my purchase</Button>
+                    <Button className="w-full" size="lg" disabled={!location}>Confirm my purchase</Button>
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
