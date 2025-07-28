@@ -75,7 +75,7 @@ export const products: Product[] = [
     imageHint: 'sports jersey',
     category: 'Jersey',
     description: 'The official SM Prelude Jersey, designed for performance and style.',
-    colors: ['Red', 'Yellow', 'Black', 'Blue', 'Green range', 'Purple'],
+    colors: ['Red', 'Yellow', 'Black', 'Blue', 'Green', 'Orange', 'Purple'],
     sizes: ['S', 'M', 'X', 'XX', 'XXX'],
   },
   {
@@ -86,7 +86,7 @@ export const products: Product[] = [
     imageHint: 'athletic jersey',
     category: 'Jersey',
     description: 'The limited Second Edition SM Jersey, a must-have for collectors.',
-    colors: ['Red', 'Yellow', 'Black', 'Blue', 'Green range', 'Purple'],
+    colors: ['Red', 'Yellow', 'Black', 'Blue', 'Green', 'Orange', 'Purple'],
     sizes: ['S', 'M', 'X', 'XX', 'XXX'],
   },
   {
