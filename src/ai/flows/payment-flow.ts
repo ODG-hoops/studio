@@ -10,7 +10,6 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
-import * as Paystack from 'paystack-sdk';
 
 const InitializePaymentInputSchema = z.object({
   email: z.string().email().describe("The customer's email address."),
@@ -25,11 +24,6 @@ const InitializePaymentOutputSchema = z.object({
 });
 export type InitializePaymentOutput = z.infer<typeof InitializePaymentOutputSchema>;
 
-// IMPORTANT: You must add your Paystack secret key to your .env file
-// as PAYSTACK_SECRET_KEY to enable real transactions.
-const paystack = new (Paystack as any)(process.env.PAYSTACK_SECRET_KEY || 'YOUR_PAYSTACK_SECRET_KEY');
-
-
 export async function initializePayment(
   input: InitializePaymentInput
 ): Promise<InitializePaymentOutput> {
@@ -43,24 +37,42 @@ const initializePaymentFlow = ai.defineFlow(
     outputSchema: InitializePaymentOutputSchema,
   },
   async (input) => {
-    try {
-      const response = await paystack.transaction.initialize({
-        email: input.email,
-        amount: input.amount.toString(), // Paystack expects amount as a string
-        // currency: 'GHS', // Optional: Specify currency if not using the default from your Paystack account
-      });
-      
-      if (!response.status || !response.data) {
-        throw new Error(response.message || 'Failed to initialize payment.');
-      }
+    // IMPORTANT: You must add your Paystack secret key to your .env file
+    // as PAYSTACK_SECRET_KEY to enable real transactions.
+    const secretKey = process.env.PAYSTACK_SECRET_KEY || 'YOUR_PAYSTACK_SECRET_KEY';
+    
+    if (secretKey === 'YOUR_PAYSTACK_SECRET_KEY') {
+        console.warn('Paystack secret key is not set. Using a placeholder.');
+    }
 
+    try {
+      const response = await fetch('https://api.paystack.co/transaction/initialize', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${secretKey}`,
+        },
+        body: JSON.stringify({
+          email: input.email,
+          amount: input.amount, // Paystack API expects amount in the lowest currency unit (e.g., pesewas)
+          // currency: 'GHS', // Optional: Specify currency if not using the default
+        }),
+      });
+
+      const responseData = await response.json();
+
+      if (!response.ok || !responseData.status) {
+        console.error('Paystack API Error:', responseData);
+        throw new Error(responseData.message || 'Failed to initialize payment.');
+      }
+      
       return {
-        authorization_url: response.data.authorization_url,
-        access_code: response.data.access_code,
-        reference: response.data.reference,
+        authorization_url: responseData.data.authorization_url,
+        access_code: responseData.data.access_code,
+        reference: responseData.data.reference,
       };
     } catch (error) {
-      console.error('Paystack API Error:', error);
+      console.error('Paystack request failed:', error);
       throw new Error('Failed to communicate with the payment gateway.');
     }
   }
