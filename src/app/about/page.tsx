@@ -21,7 +21,7 @@ export default function AboutPage() {
             </div>
             <div className="order-1 md:order-2">
               <Image
-                src="https://via.placeholder.com/600x400"
+                src="https://placehold.co/600x400.png"
                 alt="Behind the scenes at Style Maverik"
                 data-ai-hint="fashion designer studio"
                 width={600}
@@ -34,7 +34,7 @@ export default function AboutPage() {
           <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
              <div>
               <Image
-                src="https://via.placeholder.com/600x400"
+                src="https://placehold.co/600x400.png"
                 alt="Style Maverik clothing details"
                 data-ai-hint="fabric swatch"
                 width={600}
