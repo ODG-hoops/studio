@@ -40,7 +40,7 @@ const initializePaymentFlow = ai.defineFlow(
     const secretKey = process.env.PAYSTACK_SECRET_KEY;
     
     if (!secretKey) {
-        console.error('Paystack secret key is not set. Please set PAYSTACK_SECRET_KEY in your .env file.');
+        console.error('Paystack secret key is not set. Please check your .env file and restart the server.');
         throw new Error('Payment service is not configured. The API key is missing.');
     }
 
@@ -62,7 +62,7 @@ const initializePaymentFlow = ai.defineFlow(
 
       if (!response.ok || !responseData.status) {
         console.error('Paystack API Error:', responseData);
-        throw new Error(responseData.message || 'Failed to initialize payment.');
+        throw new Error(responseData.message || 'Failed to initialize payment with Paystack.');
       }
       
       return {
