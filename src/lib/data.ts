@@ -5,7 +5,7 @@ export const products: Product[] = [
     id: 'p1',
     name: '21st SM Hoodie',
     price: 250,
-    image: 'https://placehold.co/600x800.png',
+    image: '/images/21st-sm-hoodie.png',
     imageHint: 'black hoodie',
     category: 'Hoodies',
     description: 'A comfortable and stylish hoodie featuring the 21st SM design.',
