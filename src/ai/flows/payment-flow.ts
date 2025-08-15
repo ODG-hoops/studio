@@ -37,12 +37,11 @@ const initializePaymentFlow = ai.defineFlow(
     outputSchema: InitializePaymentOutputSchema,
   },
   async (input) => {
-    // IMPORTANT: You must add your Paystack secret key to your .env file
-    // as PAYSTACK_SECRET_KEY to enable real transactions.
-    const secretKey = process.env.PAYSTACK_SECRET_KEY || 'YOUR_PAYSTACK_SECRET_KEY';
+    const secretKey = process.env.PAYSTACK_SECRET_KEY;
     
-    if (secretKey === 'YOUR_PAYSTACK_SECRET_KEY') {
-        console.warn('Paystack secret key is not set. Using a placeholder.');
+    if (!secretKey) {
+        console.error('Paystack secret key is not set. Please set PAYSTACK_SECRET_KEY in your .env file.');
+        throw new Error('Payment service is not configured.');
     }
 
     try {
