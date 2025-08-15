@@ -32,6 +32,7 @@ export function PaymentOptions({ amount, onPaymentSuccess }: { amount: number, o
       const result = await handlePaymentInitialization({ email, amount });
 
       if (result.error) {
+        // Use the specific error from the server action
         throw new Error(result.error);
       }
 
