@@ -41,7 +41,7 @@ const initializePaymentFlow = ai.defineFlow(
     
     if (!secretKey) {
         console.error('Paystack secret key is not set. Please set PAYSTACK_SECRET_KEY in your .env file.');
-        throw new Error('Payment service is not configured.');
+        throw new Error('Payment service is not configured. The API key is missing.');
     }
 
     try {
@@ -54,7 +54,7 @@ const initializePaymentFlow = ai.defineFlow(
         body: JSON.stringify({
           email: input.email,
           amount: input.amount, // Paystack API expects amount in the lowest currency unit (e.g., pesewas)
-          // currency: 'GHS', // Optional: Specify currency if not using the default
+          currency: 'GHS',
         }),
       });
 
