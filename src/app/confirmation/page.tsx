@@ -1,40 +1,60 @@
 // src/app/confirmation/page.tsx
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Receipt } from '@/components/receipt';
 import type { Product } from '@/lib/types';
 import { useRouter } from 'next/navigation';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, AlertTriangle } from 'lucide-react';
+import { handleSendOrder } from '@/app/actions';
 
-type CartItem = Product & { quantity: number };
+type CartItem = Product & { quantity: number; size: string; color: string; };
+
+interface OrderDetails {
+  items: CartItem[];
+  total: number;
+  location: string;
+  customerEmail: string;
+}
 
 export default function ConfirmationPage() {
-  const [order, setOrder] = useState<{ items: CartItem[]; total: number, location: string } | null>(null);
+  const [order, setOrder] = useState<OrderDetails | null>(null);
+  const [notificationStatus, setNotificationStatus] = useState<'sending' | 'sent' | 'failed'>('sending');
   const router = useRouter();
+
+  const sendOrderNotification = useCallback(async (orderDetails: OrderDetails) => {
+    try {
+      const result = await handleSendOrder(orderDetails);
+      if (result.success) {
+        setNotificationStatus('sent');
+      } else {
+        console.error("Failed to send notification:", result.message);
+        setNotificationStatus('failed');
+      }
+    } catch (error) {
+      console.error("Error sending notification:", error);
+      setNotificationStatus('failed');
+    }
+  }, []);
 
   useEffect(() => {
     const storedOrder = localStorage.getItem('order_confirmation');
     if (storedOrder) {
-      setOrder(JSON.parse(storedOrder));
-      // Optionally clear the stored order after displaying it
+      const parsedOrder: OrderDetails = JSON.parse(storedOrder);
+      setOrder(parsedOrder);
+      sendOrderNotification(parsedOrder);
+      
       localStorage.removeItem('order_confirmation');
+      localStorage.removeItem('cart');
+      window.dispatchEvent(new Event('storage')); // Update header cart count
     } else {
-      // If no order data, maybe they landed here by mistake.
-      // Redirect to home if no order data is found
+      // If no order data, redirect to home.
       router.push('/');
     }
-  }, [router]);
+  }, [router, sendOrderNotification]);
 
-  // This useEffect will run when the page is visited, which happens after Paystack redirects back.
-  // We can finalize the process here if needed, like clearing the main cart.
-  useEffect(() => {
-    localStorage.removeItem('cart');
-    // Dispatch a storage event to update the header cart count to 0
-    window.dispatchEvent(new Event('storage'));
-  }, []);
 
   if (!order) {
     return (
@@ -55,6 +75,12 @@ export default function ConfirmationPage() {
           <p className="text-muted-foreground pt-2">
             Your order has been confirmed. A receipt has been sent to your email.
           </p>
+           {notificationStatus === 'failed' && (
+             <div className="mt-4 flex items-center justify-center gap-2 text-destructive text-sm p-3 bg-destructive/10 rounded-md">
+                <AlertTriangle className="h-4 w-4" />
+                <p>There was an issue sending the order notification to the store owner. Please contact them directly.</p>
+             </div>
+           )}
         </CardHeader>
         <CardContent>
           <Receipt items={order.items} total={order.total} location={order.location} />

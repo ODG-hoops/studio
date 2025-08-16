@@ -10,7 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { handlePaymentInitialization } from '@/app/actions';
 
-export function PaymentOptions({ amount, onPaymentSuccess }: { amount: number, onPaymentSuccess: () => void }) {
+export function PaymentOptions({ amount, onPaymentSuccess }: { amount: number, onPaymentSuccess: (email: string) => void }) {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -32,13 +32,13 @@ export function PaymentOptions({ amount, onPaymentSuccess }: { amount: number, o
       const result = await handlePaymentInitialization({ email, amount });
 
       if (result.error) {
-        // Use the specific error from the server action
         throw new Error(result.error);
       }
 
       if (result.checkoutUrl) {
-        // Before redirecting, we can call onPaymentSuccess to prepare the confirmation page data
-        onPaymentSuccess();
+        // Before redirecting, call onPaymentSuccess to prepare the confirmation page data.
+        // We pass the email so it can be included in the order details.
+        onPaymentSuccess(email);
         // Redirect to Paystack's checkout page
         router.push(result.checkoutUrl);
       } else {

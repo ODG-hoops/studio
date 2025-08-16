@@ -67,12 +67,11 @@ export default function CartPage() {
 
   const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
-  const handlePaymentSuccess = () => {
+  const handlePaymentSuccess = (customerEmail: string) => {
     // Clear the cart items but keep location and total for the confirmation page
-    const orderDetails = { items: cartItems, total, location };
+    const orderDetails = { items: cartItems, total, location, customerEmail };
     localStorage.setItem('order_confirmation', JSON.stringify(orderDetails));
-    localStorage.removeItem('cart');
-    updateCart([]); // Update state and trigger re-render
+    // We no longer clear cart here; it's cleared on the confirmation page
     router.push('/confirmation');
   };
 

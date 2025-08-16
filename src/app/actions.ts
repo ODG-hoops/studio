@@ -4,6 +4,8 @@ import { getPersonalizedRecommendations } from '@/ai/flows/personalized-recommen
 import type { PersonalizedRecommendationsInput, PersonalizedRecommendationsOutput } from '@/ai/flows/personalized-recommendations';
 import { initializePayment } from '@/ai/flows/payment-flow';
 import type { InitializePaymentInput, InitializePaymentOutput } from '@/ai/flows/payment-flow';
+import { sendOrderToOwner } from '@/ai/flows/send-order-flow';
+import type { SendOrderInput, SendOrderOutput } from '@/ai/flows/send-order-flow';
 import { products } from '@/lib/data';
 
 // This is a mock implementation because the genkit flow cannot be executed here.
@@ -44,6 +46,23 @@ export async function handlePaymentInitialization(input: InitializePaymentInput)
         return { checkoutUrl: null, error: 'Failed to get authorization URL.' };
     } catch (error) {
         console.error('Payment Initialization Error:', error);
-        return { checkoutUrl: null, error: 'Failed to initialize payment.' };
+        return { checkoutUrl: null, error: (error as Error).message || 'Failed to initialize payment.' };
     }
 }
+
+export async function handleSendOrder(
+    input: SendOrderInput
+  ): Promise<SendOrderOutput> {
+    try {
+      console.log("Sending order to owner:", input);
+      const result = await sendOrderToOwner(input);
+      console.log("Send order result:", result);
+      return result;
+    } catch (error) {
+      console.error('Error sending order notification:', error);
+      return {
+        success: false,
+        message: 'Failed to send order notification.',
+      };
+    }
+  }
