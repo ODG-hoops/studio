@@ -8,6 +8,9 @@
  * - SendOrderOutput - The return type for the sendOrderToOwner function.
  */
 
+import { config } from 'dotenv';
+config();
+
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import { products } from '@/lib/data';
