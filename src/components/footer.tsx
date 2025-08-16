@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
-import { Instagram, Twitter, Facebook } from 'lucide-react';
+import { Instagram, Twitter, Facebook, ArrowRight } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -41,7 +41,7 @@ export function Footer() {
               <form className="flex space-x-2 mt-2">
                 <Input type="email" placeholder="Your Email" className="bg-input" />
                 <Button type="submit" size="icon" aria-label="Subscribe">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4"><path d="m5 12 7 7 7-7"/></svg>
+                  <ArrowRight className="h-4 w-4" />
                 </Button>
               </form>
             </div>
