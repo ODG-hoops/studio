@@ -25,8 +25,13 @@ export function Header() {
     const updateCartCount = () => {
       const cartData = localStorage.getItem('cart');
       if (cartData) {
-        const cart = JSON.parse(cartData);
-        setCartCount(cart.items.length);
+        try {
+            const cart = JSON.parse(cartData);
+            const count = Array.isArray(cart.items) ? cart.items.length : 0;
+            setCartCount(count);
+        } catch (e) {
+            setCartCount(0);
+        }
       } else {
         setCartCount(0);
       }
