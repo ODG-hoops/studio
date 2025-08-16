@@ -38,7 +38,7 @@ export const products: Product[] = [
     id: 'p4',
     name: 'Tripple Cross Sweatshirt',
     price: 200,
-    image: 'https://placehold.co/600x800.png',
+    image: 'https://i.postimg.cc/RFJtwP40/triple-cross-sweatshirt.jpg',
     imageHint: 'designer sweatshirt',
     category: 'Sweatshirts',
     description: 'Showcase your style with the Tripple Cross sweatshirt.',
