@@ -7,8 +7,6 @@
  * - VerifyPaymentInput - The input type for the verifyPayment function.
  * - VerifyPaymentOutput - The return type for the verifyPayment function.
  */
-import { config } from 'dotenv';
-config();
 
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
