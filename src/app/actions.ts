@@ -6,6 +6,8 @@ import { initializePayment } from '@/ai/flows/payment-flow';
 import type { InitializePaymentInput, InitializePaymentOutput } from '@/ai/flows/payment-flow';
 import { sendOrderToOwner } from '@/ai/flows/send-order-flow';
 import type { SendOrderInput, SendOrderOutput } from '@/ai/flows/send-order-flow';
+import { verifyPayment } from '@/ai/flows/verify-payment-flow';
+import type { VerifyPaymentInput, VerifyPaymentOutput } from '@/ai/flows/verify-payment-flow';
 import { products } from '@/lib/data';
 
 // This is a mock implementation because the genkit flow cannot be executed here.
@@ -37,18 +39,29 @@ export async function fetchRecommendations(
   }
 }
 
-export async function handlePaymentInitialization(input: InitializePaymentInput): Promise<{ checkoutUrl: string | null; error: string | null; }> {
+export async function handlePaymentInitialization(input: InitializePaymentInput): Promise<{ checkoutUrl: string | null; error: string | null; reference: string | null; }> {
     try {
         const response = await initializePayment(input);
         if (response && response.authorization_url) {
-            return { checkoutUrl: response.authorization_url, error: null };
+            return { checkoutUrl: response.authorization_url, error: null, reference: response.reference };
         }
-        return { checkoutUrl: null, error: 'Failed to get authorization URL.' };
+        return { checkoutUrl: null, error: 'Failed to get authorization URL.', reference: null };
     } catch (error) {
         console.error('Payment Initialization Error:', error);
-        return { checkoutUrl: null, error: (error as Error).message || 'Failed to initialize payment.' };
+        return { checkoutUrl: null, error: (error as Error).message || 'Failed to initialize payment.', reference: null };
     }
 }
+
+export async function handlePaymentVerification(input: VerifyPaymentInput): Promise<VerifyPaymentOutput> {
+    try {
+        const result = await verifyPayment(input);
+        return result;
+    } catch (error) {
+        console.error('Payment Verification Error:', error);
+        return { success: false, message: (error as Error).message || 'Failed to verify payment.' };
+    }
+}
+
 
 export async function handleSendOrder(
     input: SendOrderInput

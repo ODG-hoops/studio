@@ -16,6 +16,7 @@ import { z } from 'genkit';
 const InitializePaymentInputSchema = z.object({
   email: z.string().email().describe("The customer's email address."),
   amount: z.number().positive().describe('The amount to be paid in the lowest currency unit (e.g., pesewas).'),
+  callback_url: z.string().url().describe('The URL to redirect to after payment attempt.'),
 });
 export type InitializePaymentInput = z.infer<typeof InitializePaymentInputSchema>;
 
@@ -58,6 +59,7 @@ const initializePaymentFlow = ai.defineFlow(
           email: input.email,
           amount: input.amount, // Paystack API expects amount in the lowest currency unit (e.g., pesewas)
           currency: 'GHS',
+          callback_url: input.callback_url,
         }),
       });
 

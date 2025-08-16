@@ -10,7 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { handlePaymentInitialization } from '@/app/actions';
 
-export function PaymentOptions({ amount, onPaymentSuccess }: { amount: number, onPaymentSuccess: (email: string) => void }) {
+export function PaymentOptions({ amount, onPrepareForPayment }: { amount: number, onPrepareForPayment: (email: string, reference: string) => void }) {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -29,20 +29,23 @@ export function PaymentOptions({ amount, onPaymentSuccess }: { amount: number, o
     setIsLoading(true);
 
     try {
-      const result = await handlePaymentInitialization({ email, amount });
+      // The callback URL is where Paystack will redirect the user after payment attempt.
+      const callback_url = `${window.location.origin}/verify`;
+      
+      const result = await handlePaymentInitialization({ email, amount, callback_url });
 
       if (result.error) {
         throw new Error(result.error);
       }
 
-      if (result.checkoutUrl) {
-        // Before redirecting, call onPaymentSuccess to prepare the confirmation page data.
-        // We pass the email so it can be included in the order details.
-        onPaymentSuccess(email);
+      if (result.checkoutUrl && result.reference) {
+        // Save the pending order details to localStorage before redirecting
+        onPrepareForPayment(email, result.reference);
+        
         // Redirect to Paystack's checkout page
         router.push(result.checkoutUrl);
       } else {
-        throw new Error('Could not retrieve checkout URL.');
+        throw new Error('Could not retrieve checkout URL or reference.');
       }
 
     } catch (error) {

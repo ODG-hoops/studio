@@ -12,15 +12,13 @@ import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, A
 import { PaymentOptions } from '@/components/payment-options';
 import { Minus, Plus, Trash2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { useRouter } from 'next/navigation';
 import { Label } from '@/components/ui/label';
 
-type CartItem = Product & { quantity: number; size: string; color: string; };
+export type CartItem = Product & { quantity: number; size: string; color: string; };
 
 export default function CartPage() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [location, setLocation] = useState('');
-  const router = useRouter();
 
   useEffect(() => {
     const storedCart = localStorage.getItem('cart');
@@ -40,7 +38,8 @@ export default function CartPage() {
 
   const updateCart = (newCartItems: CartItem[]) => {
     setCartItems(newCartItems);
-    localStorage.setItem('cart', JSON.stringify({ items: newCartItems }));
+    const cartToStore = { items: newCartItems };
+    localStorage.setItem('cart', JSON.stringify(cartToStore));
      // Dispatch a storage event to update the header
     window.dispatchEvent(new Event('storage'));
   };
@@ -67,13 +66,11 @@ export default function CartPage() {
 
   const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
-  const handlePaymentSuccess = (customerEmail: string) => {
-    // Clear the cart items but keep location and total for the confirmation page
-    const orderDetails = { items: cartItems, total, location, customerEmail };
-    localStorage.setItem('order_confirmation', JSON.stringify(orderDetails));
-    // We no longer clear cart here; it's cleared on the confirmation page
-    router.push('/confirmation');
+  const prepareForPayment = (email: string, reference: string) => {
+    const pendingOrder = { items: cartItems, total, location, customerEmail: email };
+    localStorage.setItem(`pending_order_${reference}`, JSON.stringify(pendingOrder));
   };
+
 
   return (
     <div className="container mx-auto px-4 py-16 md:py-24">
@@ -161,7 +158,7 @@ export default function CartPage() {
                     </AlertDialogHeader>
                     <PaymentOptions 
                       amount={total * 100} // Paystack expects amount in pesewas
-                      onPaymentSuccess={handlePaymentSuccess} 
+                      onPrepareForPayment={prepareForPayment} 
                     />
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                   </AlertDialogContent>
