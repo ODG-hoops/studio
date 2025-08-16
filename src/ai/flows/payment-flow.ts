@@ -7,6 +7,8 @@
  * - InitializePaymentInput - The input type for the initializePayment function.
  * - InitializePaymentOutput - The return type for the initializePayment function.
  */
+import { config } from 'dotenv';
+config();
 
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
@@ -40,8 +42,9 @@ const initializePaymentFlow = ai.defineFlow(
     const secretKey = process.env.PAYSTACK_SECRET_KEY;
     
     if (!secretKey) {
-        console.error('Paystack secret key is not set. Please check your .env file and restart the server.');
-        throw new Error('Payment service is not configured. The API key is missing.');
+        const errorMessage = 'Payment service is not configured. The API key is missing.';
+        console.error(errorMessage, 'Please check your .env file and restart the server.');
+        throw new Error(errorMessage);
     }
 
     try {
@@ -62,6 +65,7 @@ const initializePaymentFlow = ai.defineFlow(
 
       if (!response.ok || !responseData.status) {
         console.error('Paystack API Error:', responseData);
+        // Throw the specific message from Paystack if available
         throw new Error(responseData.message || 'Failed to initialize payment with Paystack.');
       }
       
@@ -72,7 +76,8 @@ const initializePaymentFlow = ai.defineFlow(
       };
     } catch (error) {
       console.error('Paystack request failed:', error);
-      throw new Error('Failed to communicate with the payment gateway.');
+      // Re-throw the original error to be caught by the action handler
+      throw error;
     }
   }
 );
