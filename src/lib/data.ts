@@ -27,7 +27,7 @@ export const products: Product[] = [
     id: 'p3',
     name: '21st SM Sweatshirt',
     price: 200,
-    image: 'https://placehold.co/600x800.png',
+    image: 'https://i.postimg.cc/g0qqntcb/21-sm-sweatshirt.jpg',
     imageHint: 'crewneck sweatshirt',
     category: 'Sweatshirts',
     description: 'A classic sweatshirt with the 21st SM logo, perfect for a casual look.',
