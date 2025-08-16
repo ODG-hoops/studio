@@ -19,28 +19,43 @@ export type CartItem = Product & { quantity: number; size: string; color: string
 export default function CartPage() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [location, setLocation] = useState('');
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    const storedCart = localStorage.getItem('cart');
-    if (storedCart) {
-      try {
-        const parsedCart = JSON.parse(storedCart);
-        if(Array.isArray(parsedCart.items)) {
-           setCartItems(parsedCart.items);
+    setIsMounted(true);
+    const updateCart = () => {
+        const storedCart = localStorage.getItem('cart');
+        if (storedCart) {
+          try {
+            const parsedCart = JSON.parse(storedCart);
+            const items = Array.isArray(parsedCart.items) ? parsedCart.items : [];
+            setCartItems(items);
+            if (items.length === 0) {
+                setLocation('');
+            }
+          } catch (error) {
+            console.error("Failed to parse cart from localStorage", error);
+            setCartItems([]);
+            setLocation('');
+            localStorage.removeItem('cart');
+          }
+        } else {
+            setCartItems([]);
+            setLocation('');
         }
-      } catch (error) {
-        console.error("Failed to parse cart from localStorage", error);
-        setCartItems([]);
-        localStorage.removeItem('cart');
-      }
+    };
+    
+    updateCart();
+
+    window.addEventListener('storage', updateCart);
+    return () => {
+        window.removeEventListener('storage', updateCart);
     }
   }, []);
 
-  const updateCart = (newCartItems: CartItem[]) => {
-    setCartItems(newCartItems);
+  const updateCartInStorage = (newCartItems: CartItem[]) => {
     const cartToStore = { items: newCartItems };
     localStorage.setItem('cart', JSON.stringify(cartToStore));
-     // Dispatch a storage event to update the header
     window.dispatchEvent(new Event('storage'));
   };
 
@@ -51,13 +66,13 @@ export default function CartPage() {
       const newCartItems = cartItems.map(item =>
         item.id === productId && item.size === size && item.color === color ? { ...item, quantity: newQuantity } : item
       );
-      updateCart(newCartItems);
+      updateCartInStorage(newCartItems);
     }
   };
 
   const removeItem = (productId: string, size: string, color: string) => {
     const newCartItems = cartItems.filter(item => !(item.id === productId && item.size === size && item.color === color));
-    updateCart(newCartItems);
+    updateCartInStorage(newCartItems);
   };
   
   const handleLocationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,7 +85,10 @@ export default function CartPage() {
     const pendingOrder = { items: cartItems, total, location, customerEmail: email };
     localStorage.setItem(`pending_order_${reference}`, JSON.stringify(pendingOrder));
   };
-
+  
+  if (!isMounted) {
+    return null; // Avoid hydration mismatch
+  }
 
   return (
     <div className="container mx-auto px-4 py-16 md:py-24">

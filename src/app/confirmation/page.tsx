@@ -40,16 +40,21 @@ export default function ConfirmationPage() {
   useEffect(() => {
     const storedOrder = localStorage.getItem('order_confirmation');
     if (storedOrder) {
-      const parsedOrder: OrderDetails = JSON.parse(storedOrder);
-      setOrder(parsedOrder);
-      sendOrderNotification(parsedOrder);
-      
-      // Cleanup is now handled in verify page, but we ensure it's gone here too.
-      localStorage.removeItem('order_confirmation');
-      localStorage.removeItem('cart');
-      window.dispatchEvent(new Event('storage')); // Update header cart count
+      try {
+        const parsedOrder: OrderDetails = JSON.parse(storedOrder);
+        setOrder(parsedOrder);
+        sendOrderNotification(parsedOrder);
+        
+        // Cleanup is now handled in verify page, but we ensure it's gone here too.
+        localStorage.removeItem('order_confirmation');
+        localStorage.removeItem('cart');
+        window.dispatchEvent(new Event('storage')); // Update header cart count
+      } catch (error) {
+        console.error("Failed to parse order from localStorage", error);
+        router.push('/');
+      }
     } else {
-      // If no order data, redirect to home.
+      // If no order data, redirect to home. This can happen on page reload.
       router.push('/');
     }
   }, [router, sendOrderNotification]);
