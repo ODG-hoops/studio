@@ -93,7 +93,7 @@ export const products: Product[] = [
     id: 'p9',
     name: 'SM Crop Tees',
     price: 200,
-    image: 'https://placehold.co/600x800.png',
+    image: 'https://i.postimg.cc/7Zp9dThb/sm-crop-tee.jpg',
     imageHint: 'crop top',
     category: 'Croptop',
     description: 'A trendy and comfortable crop tee for a stylish look.',
