@@ -10,13 +10,21 @@ import { Skeleton } from './ui/skeleton';
 export default function PersonalizedRecommendations() {
   const [recommendations, setRecommendations] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [historyExists, setHistoryExists] = useState(false);
 
   useEffect(() => {
-    // Simulate user browsing history with a couple of product IDs.
-    const browsingHistory = ['p2', 'p6']; 
-    
     async function getRecs() {
       setLoading(true);
+      const storedHistory = localStorage.getItem('browsingHistory');
+      const browsingHistory = storedHistory ? JSON.parse(storedHistory) : [];
+      
+      if (browsingHistory.length === 0) {
+        setLoading(false);
+        setHistoryExists(false);
+        return;
+      }
+      setHistoryExists(true);
+
       try {
         const result = await fetchRecommendations({ browsingHistory });
         if (result && result.recommendations) {
@@ -35,6 +43,10 @@ export default function PersonalizedRecommendations() {
 
     getRecs();
   }, []);
+
+  if (!historyExists) {
+    return null; // Don't render if there's no history
+  }
 
   if (loading) {
     return (

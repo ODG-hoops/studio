@@ -1,7 +1,7 @@
 // src/app/products/[id]/page.tsx
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { notFound, useParams } from 'next/navigation';
 import { products } from '@/lib/data';
@@ -23,6 +23,20 @@ export default function ProductDetailPage() {
 
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (product) {
+      const storedHistory = localStorage.getItem('browsingHistory');
+      let history = storedHistory ? JSON.parse(storedHistory) : [];
+      // Add current product to the beginning of the history
+      history = [product.id, ...history.filter(id => id !== product.id)];
+      // Keep only the last 10 viewed products
+      if (history.length > 10) {
+        history.pop();
+      }
+      localStorage.setItem('browsingHistory', JSON.stringify(history));
+    }
+  }, [product]);
 
   if (!product) {
     notFound();
