@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Receipt } from '@/components/receipt';
 import type { Product } from '@/lib/types';
 import { useRouter } from 'next/navigation';
-import { CheckCircle, AlertTriangle } from 'lucide-react';
+import { CheckCircle, AlertTriangle, Loader2 } from 'lucide-react';
 import { handleSendOrder } from '@/app/actions';
 
 type CartItem = Product & { quantity: number; size: string; color: string; };
@@ -25,19 +25,17 @@ export default function ConfirmationPage() {
   const router = useRouter();
 
   const sendOrderNotification = useCallback(async (orderDetails: OrderDetails) => {
-    try {
-      const result = await handleSendOrder(orderDetails);
-      if (result.success) {
-        setNotificationStatus('sent');
-      } else {
-        console.error("Failed to send notification:", result.message);
-        setNotificationStatus('failed');
-      }
-    } catch (error) {
-      console.error("Error sending notification:", error);
+    // This function is already called from the verify page.
+    // We are just checking the result here.
+    const notificationResult = localStorage.getItem('notification_status');
+    if (notificationResult === 'sent') {
+      setNotificationStatus('sent');
+    } else if (notificationResult === 'failed') {
       setNotificationStatus('failed');
     }
+    localStorage.removeItem('notification_status');
   }, []);
+
 
   useEffect(() => {
     const storedOrder = localStorage.getItem('order_confirmation');
@@ -46,6 +44,7 @@ export default function ConfirmationPage() {
       setOrder(parsedOrder);
       sendOrderNotification(parsedOrder);
       
+      // Cleanup is now handled in verify page, but we ensure it's gone here too.
       localStorage.removeItem('order_confirmation');
       localStorage.removeItem('cart');
       window.dispatchEvent(new Event('storage')); // Update header cart count
@@ -58,8 +57,8 @@ export default function ConfirmationPage() {
 
   if (!order) {
     return (
-      <div className="container mx-auto px-4 py-16 md:py-24 text-center">
-        <p>Loading your order details...</p>
+      <div className="container mx-auto px-4 py-16 md:py-24 text-center flex justify-center items-center" style={{ minHeight: '60vh' }}>
+        <Loader2 className="h-12 w-12 animate-spin text-primary" />
       </div>
     );
   }
@@ -78,7 +77,7 @@ export default function ConfirmationPage() {
            {notificationStatus === 'failed' && (
              <div className="mt-4 flex items-center justify-center gap-2 text-destructive text-sm p-3 bg-destructive/10 rounded-md">
                 <AlertTriangle className="h-4 w-4" />
-                <p>There was an issue sending the order notification to the store owner. Please contact them directly.</p>
+                <p>There was an issue notifying the store owner. Please contact them directly with your order details.</p>
              </div>
            )}
         </CardHeader>

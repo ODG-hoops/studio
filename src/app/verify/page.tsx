@@ -48,8 +48,13 @@ function Verify() {
 
         const orderDetails: OrderDetails = JSON.parse(pendingOrderString);
 
-        // Send order notification email
-        await handleSendOrder(orderDetails);
+        // Send order notification email and store the result for the confirmation page
+        const notificationResult = await handleSendOrder(orderDetails);
+        if (notificationResult.success) {
+            localStorage.setItem('notification_status', 'sent');
+        } else {
+            localStorage.setItem('notification_status', 'failed');
+        }
         
         // Prepare for confirmation page
         localStorage.setItem('order_confirmation', JSON.stringify(orderDetails));
@@ -65,6 +70,8 @@ function Verify() {
       } else {
         setStatus('failed');
         setMessage(verificationResult.message || 'Payment verification failed. Your order was not completed. Please try again.');
+        // Also clean up the failed pending order
+        localStorage.removeItem(`pending_order_${reference}`);
       }
     };
 
@@ -91,7 +98,14 @@ function Verify() {
 
 export default function VerifyPage() {
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={
+            <div className="container mx-auto px-4 py-16 md:py-24 flex items-center justify-center" style={{ minHeight: '60vh' }}>
+                <div className="max-w-md w-full text-center">
+                    <Loader2 className="h-12 w-12 mx-auto animate-spin text-primary" />
+                    <p className="mt-4 text-lg text-muted-foreground">Loading verification...</p>
+                </div>
+            </div>
+        }>
             <Verify />
         </Suspense>
     )
