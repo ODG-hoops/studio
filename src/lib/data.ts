@@ -71,7 +71,7 @@ export const products: Product[] = [
     id: 'p7',
     name: 'SM Prelude Jersey',
     price: 350,
-    image: 'https://placehold.co/600x800.png',
+    image: 'https://i.postimg.cc/QMdYZWr3/SM-prelude-Jersey.png',
     imageHint: 'sports jersey',
     category: 'Jersey',
     description: 'The official SM Prelude Jersey, designed for performance and style.',
