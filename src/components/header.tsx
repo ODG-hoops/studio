@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -90,14 +91,14 @@ export function Header() {
                 <span className="sr-only">Toggle Menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="p-0">
-                <SheetHeader className="p-4 border-b text-left">
-                   <SheetTitle>
-                     <Link href="/" onClick={() => setSheetOpen(false)}>
+            <SheetContent side="left">
+                <Link href="/" onClick={() => setSheetOpen(false)}>
+                  <SheetHeader className="p-4 border-b text-left">
+                    <SheetTitle>
                         <span className="font-bold text-lg tracking-wider text-primary">STYLE MAVERIK</span>
-                      </Link>
-                   </SheetTitle>
-                </SheetHeader>
+                    </SheetTitle>
+                  </SheetHeader>
+                </Link>
                 <nav className="flex flex-col gap-4 p-4">
                   {navLinks.map((link) => (
                     <Link
