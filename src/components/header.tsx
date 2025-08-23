@@ -28,9 +28,11 @@ export function Header() {
       if (cartData) {
         try {
             const cart = JSON.parse(cartData);
+            // Ensure cart.items is an array before getting its length
             const count = Array.isArray(cart.items) ? cart.items.length : 0;
             setCartCount(count);
         } catch (e) {
+            console.error("Failed to parse cart from localStorage", e);
             setCartCount(0);
         }
       } else {
@@ -91,14 +93,14 @@ export function Header() {
                 <span className="sr-only">Toggle Menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left">
-                <Link href="/" onClick={() => setSheetOpen(false)}>
-                  <SheetHeader className="p-4 border-b text-left">
-                    <SheetTitle>
+            <SheetContent side="left" className="p-0">
+                <SheetHeader className="p-4 border-b">
+                  <SheetTitle>
+                    <Link href="/" onClick={() => setSheetOpen(false)}>
                         <span className="font-bold text-lg tracking-wider text-primary">STYLE MAVERIK</span>
-                    </SheetTitle>
-                  </SheetHeader>
-                </Link>
+                    </Link>
+                  </SheetTitle>
+                </SheetHeader>
                 <nav className="flex flex-col gap-4 p-4">
                   {navLinks.map((link) => (
                     <Link
