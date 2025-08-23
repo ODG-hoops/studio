@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { useState, useEffect } from 'react';
 
 const navLinks = [
@@ -90,13 +90,14 @@ export function Header() {
                 <span className="sr-only">Toggle Menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left">
-               <div className="flex flex-col h-full">
-                <div className="p-4 border-b">
-                   <Link href="/" onClick={() => setSheetOpen(false)}>
-                    <span className="font-bold text-lg tracking-wider text-primary">STYLE MAVERIK</span>
-                  </Link>
-                </div>
+            <SheetContent side="left" className="p-0">
+                <SheetHeader className="p-4 border-b text-left">
+                   <SheetTitle>
+                     <Link href="/" onClick={() => setSheetOpen(false)}>
+                        <span className="font-bold text-lg tracking-wider text-primary">STYLE MAVERIK</span>
+                      </Link>
+                   </SheetTitle>
+                </SheetHeader>
                 <nav className="flex flex-col gap-4 p-4">
                   {navLinks.map((link) => (
                     <Link
@@ -112,7 +113,6 @@ export function Header() {
                     </Link>
                   ))}
                 </nav>
-              </div>
             </SheetContent>
           </Sheet>
         </div>
