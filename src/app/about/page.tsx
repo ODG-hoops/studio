@@ -34,7 +34,7 @@ export default function AboutPage() {
           <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
              <div>
               <Image
-                src="https://placehold.co/600x400.png"
+                src="https://i.postimg.cc/kX9LsNt4/the-maverik-spirit.jpg"
                 alt="Style Maverik clothing details"
                 data-ai-hint="fabric swatch"
                 width={600}
