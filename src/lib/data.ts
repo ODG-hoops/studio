@@ -60,7 +60,7 @@ export const products: Product[] = [
     id: 'p6',
     name: 'Triple Cross Shirt',
     price: 180,
-    image: 'https://placehold.co/600x800.png',
+    image: 'https://i.postimg.cc/Px6wGByK/triple-cross-shirt.jpg',
     imageHint: 'graphic t-shirt',
     category: 'Cotton T-Shirts',
     description: 'A bold statement t-shirt with the Triple Cross design.',
