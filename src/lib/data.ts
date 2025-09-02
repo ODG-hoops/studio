@@ -16,7 +16,7 @@ export const products: Product[] = [
     id: 'p2',
     name: 'Triple Cross Hoodie',
     price: 250,
-    image: 'https://placehold.co/600x800.png',
+    image: 'https://i.postimg.cc/8PJbZ6N2/triple-cross-hoodie.jpg',
     imageHint: 'graphic hoodie',
     category: 'Hoodies',
     description: 'A premium hoodie with the iconic Triple Cross design.',
