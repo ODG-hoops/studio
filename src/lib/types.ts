@@ -4,7 +4,7 @@ export type Product = {
   price: number;
   image: string;
   imageHint: string;
-  category: 'Hoodies' | 'Sweatshirts' | 'Cotton T-Shirts' | 'Croptop';
+  category: 'Hoodies' | 'Sweatshirts' | 'Cotton T-Shirts' | 'Croptop' | 'Jersey';
   description: string;
   colors: string[];
   sizes: string[];
