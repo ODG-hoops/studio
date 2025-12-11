@@ -35,17 +35,6 @@ export const products: Product[] = [
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
   },
   {
-    id: 'p5',
-    name: '21st SM Shirt',
-    price: 150,
-    image: 'https://i.postimg.cc/k4vG1hXc/21st-sm-shirt.jpg',
-    imageHint: 'cotton t-shirt',
-    category: 'Cotton T-Shirts',
-    description: 'A high-quality cotton t-shirt with the 21st SM print.',
-    colors: ['White', 'Blue', 'Black', 'Blue-black', 'Pink', 'Red'],
-    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-  },
-  {
     id: 'p6',
     name: 'Triple Cross Shirt',
     price: 150,
