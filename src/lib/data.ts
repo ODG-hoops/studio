@@ -13,17 +13,6 @@ export const products: Product[] = [
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
   },
   {
-    id: 'p2',
-    name: 'Triple Cross Hoodie',
-    price: 200,
-    image: 'https://i.postimg.cc/y8P8v9f2/triple-cross-hoodie.jpg',
-    imageHint: 'graphic hoodie',
-    category: 'Hoodies',
-    description: 'A premium hoodie with the iconic Triple Cross design.',
-    colors: ['White', 'Blue', 'Black', 'Blue-black', 'Pink', 'Red'],
-    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-  },
-  {
     id: 'p3',
     name: '21st SM Sweatshirt',
     price: 180,
