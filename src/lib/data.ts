@@ -27,7 +27,7 @@ export const products: Product[] = [
     id: 'p4',
     name: 'Triple Cross Sweatshirt',
     price: 180,
-    image: 'https://i.postimg.cc/13TRpMv2/triple-cross-sweatshirt.jpg',
+    image: 'https://image2url.com/images/1765493588135-73d4cee3-577b-4d59-b443-3097ad3c0f9e.png',
     imageHint: 'graphic sweatshirt',
     category: 'Sweatshirts',
     description: 'Stay warm and stylish with this premium Triple Cross sweatshirt.',
