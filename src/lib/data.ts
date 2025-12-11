@@ -35,17 +35,6 @@ export const products: Product[] = [
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
   },
   {
-    id: 'p4',
-    name: 'Triple Cross Sweatshirt',
-    price: 180,
-    image: 'https://i.postimg.cc/RFJtwP40/triple-cross-sweatshirt.jpg',
-    imageHint: 'designer sweatshirt',
-    category: 'Sweatshirts',
-    description: 'Showcase your style with the Triple Cross sweatshirt.',
-    colors: ['White', 'Blue', 'Black', 'Blue-black', 'Pink', 'Red'],
-    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-  },
-  {
     id: 'p5',
     name: '21st SM Shirt',
     price: 150,
