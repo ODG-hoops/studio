@@ -67,15 +67,4 @@ export const products: Product[] = [
     colors: ['White', 'Blue', 'Black', 'Blue-black', 'Pink', 'Red'],
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
   },
-  {
-    id: 'p9',
-    name: 'SM Crop Tees',
-    price: 200,
-    image: 'https://i.postimg.cc/7Zp9dThb/sm-crop-tee.jpg',
-    imageHint: 'crop top',
-    category: 'Croptop',
-    description: 'A trendy and comfortable crop tee for a stylish look.',
-    colors: ['Pink', 'White', 'Black'],
-    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-  },
 ];
