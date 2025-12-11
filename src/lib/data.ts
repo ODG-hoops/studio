@@ -49,7 +49,7 @@ export const products: Product[] = [
     id: 'p5',
     name: '21st SM Shirt',
     price: 150,
-    image: 'https://placehold.co/600x800.png',
+    image: 'https://i.postimg.cc/k4vG1hXc/21st-sm-shirt.jpg',
     imageHint: 'cotton t-shirt',
     category: 'Cotton T-Shirts',
     description: 'A high-quality cotton t-shirt with the 21st SM print.',
