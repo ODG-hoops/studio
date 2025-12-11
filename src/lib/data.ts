@@ -48,7 +48,7 @@ export const products: Product[] = [
   {
     id: 'p5',
     name: '21st SM Shirt',
-    price: 180,
+    price: 150,
     image: 'https://placehold.co/600x800.png',
     imageHint: 'cotton t-shirt',
     category: 'Cotton T-Shirts',
@@ -59,7 +59,7 @@ export const products: Product[] = [
   {
     id: 'p6',
     name: 'Triple Cross Shirt',
-    price: 180,
+    price: 150,
     image: 'https://i.postimg.cc/Px6wGByK/triple-cross-shirt.jpg',
     imageHint: 'graphic t-shirt',
     category: 'Cotton T-Shirts',
