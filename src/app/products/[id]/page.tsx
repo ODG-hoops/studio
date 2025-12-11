@@ -12,6 +12,7 @@ import { ShoppingCart } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import type { Product } from '@/lib/types';
+import { colorNameToHex } from '@/lib/colors';
 
 type CartItem = Product & { quantity: number; size: string; color: string; };
 
@@ -98,18 +99,20 @@ export default function ProductDetailPage() {
           <div className="space-y-4">
             <div>
               <h3 className="text-lg font-medium mb-2">Color</h3>
-              <RadioGroup onValueChange={setSelectedColor} className="flex flex-wrap gap-2">
+              <RadioGroup onValueChange={setSelectedColor} className="flex flex-wrap gap-3">
                 {product.colors.map((color) => (
                   <div key={color}>
                     <RadioGroupItem value={color} id={`color-${color}`} className="sr-only" />
                     <Label
                       htmlFor={`color-${color}`}
                       className={cn(
-                        "cursor-pointer rounded-md border-2 px-4 py-2 transition-colors",
-                        selectedColor === color ? "border-primary bg-primary/10" : "border-border"
+                        "cursor-pointer rounded-full h-8 w-8 flex items-center justify-center transition-all",
+                        selectedColor === color ? 'ring-2 ring-offset-2 ring-offset-background ring-primary' : 'ring-1 ring-border'
                       )}
+                      style={{ backgroundColor: colorNameToHex[color] || '#ccc' }}
+                      title={color}
                     >
-                      {color}
+                      {color === 'White' && <div className="h-full w-full rounded-full border border-muted-foreground/50"></div>}
                     </Label>
                   </div>
                 ))}
