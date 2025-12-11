@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 
 export default function Home() {
-  const featuredProducts = products.slice(0, 4);
+  const featuredProducts = products.slice(0, 2);
 
   return (
     <>
@@ -22,7 +22,7 @@ export default function Home() {
               Discover our handpicked selection of standout pieces from the latest collection.
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
             {featuredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
