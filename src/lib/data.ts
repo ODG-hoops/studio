@@ -4,7 +4,7 @@ export const products: Product[] = [
   {
     id: 'p1',
     name: '21st SM Hoodie',
-    price: 250,
+    price: 200,
     image: 'https://i.postimg.cc/J7yDFdw7/21st-sm-hoodie-png.jpg',
     imageHint: 'black hoodie',
     category: 'Hoodies',
@@ -15,8 +15,8 @@ export const products: Product[] = [
   {
     id: 'p2',
     name: 'Triple Cross Hoodie',
-    price: 250,
-    image: 'https://i.postimg.cc/8PJbZ6N2/triple-cross-hoodie.jpg',
+    price: 200,
+    image: 'https://i.postimg.cc/y8P8v9f2/triple-cross-hoodie.jpg',
     imageHint: 'graphic hoodie',
     category: 'Hoodies',
     description: 'A premium hoodie with the iconic Triple Cross design.',
@@ -26,7 +26,7 @@ export const products: Product[] = [
   {
     id: 'p3',
     name: '21st SM Sweatshirt',
-    price: 200,
+    price: 180,
     image: 'https://i.postimg.cc/g0qqntcb/21-sm-sweatshirt.jpg',
     imageHint: 'crewneck sweatshirt',
     category: 'Sweatshirts',
@@ -37,7 +37,7 @@ export const products: Product[] = [
   {
     id: 'p4',
     name: 'Triple Cross Sweatshirt',
-    price: 200,
+    price: 180,
     image: 'https://i.postimg.cc/RFJtwP40/triple-cross-sweatshirt.jpg',
     imageHint: 'designer sweatshirt',
     category: 'Sweatshirts',
