@@ -60,7 +60,7 @@ export const products: Product[] = [
     id: 'p6',
     name: 'Triple Cross Shirt',
     price: 150,
-    image: 'https://i.postimg.cc/Px6wGByK/triple-cross-shirt.jpg',
+    image: 'https://image2url.com/images/1765491735715-9574afc1-4582-4a34-aca1-5bfb4f1bd2b0.jpeg',
     imageHint: 'graphic t-shirt',
     category: 'Cotton T-Shirts',
     description: 'A bold statement t-shirt with the Triple Cross design.',
