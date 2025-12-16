@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { useState, useEffect } from 'react';
+import { ThemeToggle } from './theme-toggle';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -71,6 +72,7 @@ export function Header() {
           ))}
         </nav>
         <div className="flex items-center space-x-2">
+          <ThemeToggle />
           <Button variant="ghost" size="icon" asChild>
             <Link href="/cart" aria-label="Shopping Cart">
               <div className="relative">
