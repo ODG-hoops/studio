@@ -21,7 +21,7 @@ export default function AboutPage() {
             </div>
             <div className="order-1 md:order-2">
               <Image
-                src="https://i.postimg.cc/FsLXCFTW/brand-mission.jpg"
+                src="https://i.postimg.cc/0j3pWz3x/brand-mission-2.jpg"
                 alt="Behind the scenes at Style Maverik"
                 data-ai-hint="fashion designer studio"
                 width={600}
