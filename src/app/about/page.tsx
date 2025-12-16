@@ -34,7 +34,7 @@ export default function AboutPage() {
           <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
              <div>
               <Image
-                src="https://i.postimg.cc/kX9LsNt4/the-maverik-spirit.jpg"
+                src="https://i.postimg.cc/c4cc7Y8b/sm-hoodie.jpg"
                 alt="Style Maverik clothing details"
                 data-ai-hint="fabric swatch"
                 width={600}
