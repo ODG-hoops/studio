@@ -40,9 +40,9 @@ const initializePaymentFlow = ai.defineFlow(
   async (input) => {
     const secretKey = process.env.PAYSTACK_SECRET_KEY;
     
-    if (!secretKey) {
-      const errorMessage = 'Payment service is not configured. The API key is missing.';
-      console.error(errorMessage, 'Please check your .env file and restart the server.');
+    if (!secretKey || secretKey === 'YOUR_PAYSTACK_SECRET_KEY_HERE') {
+      const errorMessage = 'Paystack API key is missing or not configured. Please check your .env file.';
+      console.error(errorMessage);
       throw new Error(errorMessage);
     }
 
