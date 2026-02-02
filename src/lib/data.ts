@@ -15,7 +15,7 @@ export const products: Product[] = [
   {
     id: 'p3',
     name: 'Maverik Girlies',
-    price: 180,
+    price: 200,
     image: 'https://i.postimg.cc/BZ7zB5xT/IMG-9390-(1).jpg',
     imageHint: 'pink sweatshirt',
     category: 'Sweatshirts',
