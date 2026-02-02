@@ -2,17 +2,6 @@ import type { Product } from './types';
 
 export const products: Product[] = [
   {
-    id: 'p1',
-    name: '21st SM Hoodie',
-    price: 200,
-    image: 'https://i.postimg.cc/J7yDFdw7/21st-sm-hoodie-png.jpg',
-    imageHint: 'black hoodie',
-    category: 'Hoodies',
-    description: 'A comfortable and stylish hoodie featuring the 21st SM design.',
-    colors: ['White', 'Blue', 'Black', 'Blue-black', 'Pink', 'Red'],
-    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-  },
-  {
     id: 'p3',
     name: 'Maverik Girlies',
     price: 200,
@@ -20,6 +9,17 @@ export const products: Product[] = [
     imageHint: 'pink sweatshirt',
     category: 'Sweatshirts',
     description: 'Show your Maverick spirit with this stylish and comfortable sweatshirt.',
+    colors: ['White', 'Blue', 'Black', 'Blue-black', 'Pink', 'Red'],
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+  },
+  {
+    id: 'p1',
+    name: '21st SM Hoodie',
+    price: 200,
+    image: 'https://i.postimg.cc/J7yDFdw7/21st-sm-hoodie-png.jpg',
+    imageHint: 'black hoodie',
+    category: 'Hoodies',
+    description: 'A comfortable and stylish hoodie featuring the 21st SM design.',
     colors: ['White', 'Blue', 'Black', 'Blue-black', 'Pink', 'Red'],
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
   },
