@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Analytics } from '@vercel/analytics/next';
+import { Analytics } from '@vercel/analytics/react';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { Header } from '@/components/header';
@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
-      <body className="antialiased bg-background text-foreground">
+      <body className="font-serif antialiased bg-background text-foreground">
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
