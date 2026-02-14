@@ -8,7 +8,7 @@ export const products: Product[] = [
     image: 'https://i.postimg.cc/BQcT42Xk/maverik-girlies.jpg',
     imageHint: 'pink sweatshirt',
     category: 'Sweatshirts',
-    description: 'A stylish and comfortable sweatshirt for the modern maverik girl.',
+    description: 'A stylish and comfortable crop tee for the modern maverik girl.',
     colors: ['White', 'Blue', 'Black', 'Blue-black', 'Pink', 'Red'],
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
   },
