@@ -1,4 +1,3 @@
-
 // src/ai/flows/send-order-flow.ts
 'use server';
 /**
@@ -10,8 +9,6 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import { Resend } from 'resend';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 const CartItemSchema = z.object({
   id: z.string(),
@@ -44,13 +41,18 @@ export async function sendOrderToOwner(input: SendOrderInput): Promise<SendOrder
  * Sends a formatted email to the store owner.
  */
 async function sendEmail(to: string, subject: string, body: string) {
-    if (!process.env.RESEND_API_KEY) {
+    const apiKey = process.env.RESEND_API_KEY;
+    
+    if (!apiKey || apiKey === 'YOUR_RESEND_API_KEY_HERE') {
         console.warn("RESEND_API_KEY is missing. Falling back to logs.");
+        console.log(`--- NEW ORDER NOTIFICATION (MOCK) ---`);
         console.log(`To: ${to}\nSubject: ${subject}\nBody:\n${body}`);
-        return { success: false, message: "Resend API key missing." };
+        console.log(`-------------------------------------`);
+        return { success: false, message: "Resend API key missing. Order captured in logs." };
     }
 
     try {
+        const resend = new Resend(apiKey);
         const { data, error } = await resend.emails.send({
             from: 'Style Maverik <onboarding@resend.dev>',
             to: [to],
