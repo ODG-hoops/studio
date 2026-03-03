@@ -36,7 +36,7 @@ If your email isn't set up yet, you can still see every order:
 Whenever we change something in the code here, use these commands in your terminal to push them live:
 
 1. `git add .`
-2. `git commit -m "Final email configuration"`
+2. `git commit -m "Final configuration for automated orders"`
 3. `git push`
 
 ---

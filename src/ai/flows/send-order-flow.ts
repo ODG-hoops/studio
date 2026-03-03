@@ -1,4 +1,3 @@
-// src/ai/flows/send-order-flow.ts
 'use server';
 /**
  * @fileOverview Handles sending order confirmation emails to the store owner using Resend.
