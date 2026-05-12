@@ -41,7 +41,7 @@ export default function AdminLoginPage() {
 
   return (
     <div className="container mx-auto px-4 py-16 md:py-32 flex justify-center items-center">
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md border-primary/20 shadow-xl">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
              <div className="p-3 bg-primary/10 rounded-full">
@@ -62,6 +62,7 @@ export default function AdminLoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                className="bg-muted/50"
               />
             </div>
             <div className="space-y-2">
@@ -72,6 +73,7 @@ export default function AdminLoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                className="bg-muted/50"
               />
             </div>
             <Button type="submit" className="w-full" disabled={loading}>

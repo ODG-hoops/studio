@@ -8,6 +8,8 @@ import type { Product } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { useFirestore } from '@/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { errorEmitter } from '@/firebase/error-emitter';
+import { FirestorePermissionError } from '@/firebase/errors';
 
 type CartItem = Product & { quantity: number; size: string; color: string; };
 
@@ -52,17 +54,23 @@ function Verify() {
 
         // 1. Save order to Firestore for the Admin Portal
         if (db) {
-          try {
-            await addDoc(collection(db, 'orders'), {
-              ...orderDetails,
-              status: 'pending',
-              paymentReference: reference,
-              createdAt: serverTimestamp(),
+          const orderData = {
+            ...orderDetails,
+            status: 'pending',
+            paymentReference: reference,
+            createdAt: serverTimestamp(),
+          };
+          
+          // Non-blocking write
+          addDoc(collection(db, 'orders'), orderData)
+            .catch(async (err) => {
+              const permissionError = new FirestorePermissionError({
+                path: 'orders',
+                operation: 'create',
+                requestResourceData: orderData,
+              });
+              errorEmitter.emit('permission-error', permissionError);
             });
-          } catch (e) {
-            console.error("Failed to save order to database", e);
-            // We continue anyway so the customer gets their confirmation
-          }
         }
 
         // 2. Send order notification email
