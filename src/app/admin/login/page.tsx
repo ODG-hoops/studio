@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -26,7 +27,7 @@ export default function AdminLoginPage() {
     if (!auth) {
       toast({
         title: "System Error",
-        description: "Firebase is not initialized. Please check your configuration in src/firebase/config.ts.",
+        description: "Firebase connection not established. Please check your config.",
         variant: "destructive",
       });
       return;
@@ -46,10 +47,11 @@ export default function AdminLoginPage() {
     
     try {
       // The requested code is used as the password for the management account
+      // Management Email is fixed to management@stylemaverik.com
       // Code: @admin.stylemaverik2021
       await signInWithEmailAndPassword(auth, 'management@stylemaverik.com', accessCode);
       
-      toast({ title: "Authorized", description: "Welcome to the management portal." });
+      toast({ title: "Authorized", description: "Identity verified. Redirecting..." });
       router.push('/admin/dashboard');
     } catch (error: any) {
       console.error("Auth error:", error);
@@ -57,12 +59,12 @@ export default function AdminLoginPage() {
       let errorMessage = "The access code provided is incorrect.";
       
       if (error.code === 'auth/api-key-not-valid' || error.code === 'auth/invalid-api-key') {
-        errorMessage = "Your Firebase API Key is invalid or missing. Please update src/firebase/config.ts with your real keys from the Firebase Console.";
+        errorMessage = "Firebase API Key error. Verify settings in src/firebase/config.ts.";
         setConfigError(true);
       } else if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
-        errorMessage = "Access denied. Verify your code or ensure the management user exists in Firebase.";
+        errorMessage = "Access denied. Ensure user exists in Firebase Console.";
       } else if (error.code === 'auth/network-request-failed') {
-        errorMessage = "Network error. Please check your internet connection.";
+        errorMessage = "Check your internet connection and try again.";
       }
 
       toast({
@@ -76,31 +78,31 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-16 md:py-32 flex flex-col justify-center items-center gap-6">
+    <div className="min-h-[80vh] flex flex-col justify-center items-center px-4">
       {configError && (
-        <Alert variant="destructive" className="max-w-md bg-destructive/10 border-destructive/20 text-destructive-foreground">
+        <Alert variant="destructive" className="max-w-md mb-6 bg-destructive/10 border-destructive/20 text-destructive-foreground">
           <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Configuration Required</AlertTitle>
+          <AlertTitle>Config Verification Needed</AlertTitle>
           <AlertDescription className="text-xs">
-            Your Firebase API Key is not set correctly. You must update the <code>src/firebase/config.ts</code> file with the configuration from your Firebase Console (Project Settings) to enable login.
+            The Firebase API Key appears invalid. Please verify the configuration in <code>src/firebase/config.ts</code>.
           </AlertDescription>
         </Alert>
       )}
 
-      <Card className="w-full max-w-md border-primary/20 shadow-xl bg-card/50 backdrop-blur-sm">
-        <CardHeader className="text-center">
+      <Card className="w-full max-w-md border-primary/20 shadow-2xl bg-card/80 backdrop-blur-md">
+        <CardHeader className="text-center space-y-1">
           <div className="flex justify-center mb-4">
-             <div className="p-4 bg-primary/10 rounded-full border border-primary/20">
+             <div className="p-4 bg-primary/10 rounded-full border border-primary/30 shadow-inner">
                 <ShieldCheck className="h-8 w-8 text-primary" />
              </div>
           </div>
-          <CardTitle className="text-2xl font-bold tracking-tight">Management Access</CardTitle>
-          <CardDescription>Enter your secure access code to manage Style Maverik INC.</CardDescription>
+          <CardTitle className="text-2xl font-bold tracking-tight">Internal Access</CardTitle>
+          <CardDescription>Enter code to access management protocols.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="accessCode">Access Code</Label>
+              <Label htmlFor="accessCode" className="text-[10px] uppercase tracking-widest text-muted-foreground ml-1">Access Token</Label>
               <Input
                 id="accessCode"
                 type="password"
@@ -109,16 +111,18 @@ export default function AdminLoginPage() {
                 onChange={(e) => setAccessCode(e.target.value)}
                 required
                 disabled={loading}
-                className="bg-background border-primary/20 focus:border-primary transition-colors text-center text-lg tracking-widest"
+                className="bg-background/50 border-primary/20 focus:border-primary transition-all text-center text-xl tracking-[0.4em] h-14"
               />
             </div>
-            <Button type="submit" className="w-full h-12 text-lg font-semibold" disabled={loading}>
+            <Button type="submit" className="w-full h-12 text-lg font-bold shadow-lg" disabled={loading}>
               {loading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : "Verify Identity"}
             </Button>
           </form>
-          <p className="mt-6 text-[10px] text-center text-muted-foreground uppercase tracking-[0.2em]">
-            Style Maverik INC. Internal Systems
-          </p>
+          <div className="mt-8 pt-6 border-t border-primary/10">
+             <p className="text-[10px] text-center text-muted-foreground uppercase tracking-[0.2em] font-medium opacity-50">
+               Style Maverik INC. Secure Environment
+             </p>
+          </div>
         </CardContent>
       </Card>
     </div>

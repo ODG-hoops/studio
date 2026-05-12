@@ -9,10 +9,10 @@
  * 3. Copy the values from the firebaseConfig object provided there.
  */
 export const firebaseConfig = {
-  apiKey: "AIzaSyB0GllgoBWNkOXL8w1BRyyryML7Ah_X5Sc",
-  authDomain: "REPLACE_WITH_YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "REPLACE_WITH_YOUR_PROJECT_ID",
-  storageBucket: "REPLACE_WITH_YOUR_PROJECT_ID.firebasestorage.app",
-  messagingSenderId: "REPLACE_WITH_YOUR_SENDER_ID",
-  appId: "REPLACE_WITH_YOUR_APP_ID"
+  apiKey: "AIzaSyDIRyGazOrTYYaEF2bd3vOuZDdb3QbOEQ4",
+  authDomain: "style-maverik-inc.firebaseapp.com",
+  projectId: "style-maverik-inc",
+  storageBucket: "style-maverik-inc.firebasestorage.app",
+  messagingSenderId: "826843073199",
+  appId: "1:826843073199:web:682ca00c2e256cb490a25a"
 };
