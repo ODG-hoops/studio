@@ -20,20 +20,47 @@ export default function AdminLoginPage() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!auth) return;
+    
+    if (!auth) {
+      toast({
+        title: "System Error",
+        description: "Firebase is not initialized. Please check your configuration.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!accessCode) {
+      toast({
+        title: "Code Required",
+        description: "Please enter your management access code.",
+        variant: "destructive",
+      });
+      return;
+    }
 
     setLoading(true);
     try {
-      // We use a fixed management email and use the access code as the password
-      // The requested code is @admin.stylemaverik2021
+      // The requested code is used as the password for the management account
+      // Code: @admin.stylemaverik2021
       await signInWithEmailAndPassword(auth, 'management@stylemaverik.com', accessCode);
+      
       toast({ title: "Authorized", description: "Welcome to the management portal." });
       router.push('/admin/dashboard');
     } catch (error: any) {
       console.error("Auth error:", error);
+      
+      let errorMessage = "The access code provided is incorrect.";
+      
+      if (error.code === 'auth/api-key-not-valid' || error.code === 'auth/invalid-api-key') {
+        errorMessage = "Firebase configuration is invalid. Please update your API key in src/firebase/config.ts.";
+      } else if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+        errorMessage = "Access denied. Verify your code or ensure the management user exists in Firebase.";
+      }
+
       toast({
         title: "Access Denied",
-        description: "The access code provided is incorrect or the portal is not configured.",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
@@ -64,6 +91,7 @@ export default function AdminLoginPage() {
                 value={accessCode}
                 onChange={(e) => setAccessCode(e.target.value)}
                 required
+                disabled={loading}
                 className="bg-background border-primary/20 focus:border-primary transition-colors text-center text-lg tracking-widest"
               />
             </div>
