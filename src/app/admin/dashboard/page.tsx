@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -10,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Loader2, Package, LogOut, Calendar as CalendarIcon, DollarSign, MapPin, Mail } from 'lucide-react';
+import { Loader2, Package, LogOut, Calendar as CalendarIcon, DollarSign, MapPin, Mail, RefreshCw } from 'lucide-react';
 import { signOut } from 'firebase/auth';
 import { useToast } from '@/hooks/use-toast';
 import { errorEmitter } from '@/firebase/error-emitter';
@@ -38,7 +37,7 @@ export default function AdminDashboard() {
     
     updateDoc(orderRef, { status: newStatus })
       .then(() => {
-        toast({ title: "Status Updated", description: `Order status changed to ${newStatus}.` });
+        toast({ title: "Status Updated", description: `Order is now marked as ${newStatus}.` });
       })
       .catch(async (error) => {
         const permissionError = new FirestorePermissionError({
@@ -61,10 +60,10 @@ export default function AdminDashboard() {
 
   if (authLoading || !user) {
     return (
-      <div className="flex h-screen items-center justify-center bg-background">
+      <div className="flex h-[80vh] items-center justify-center bg-background">
         <div className="text-center space-y-4">
-          <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto" />
-          <p className="text-muted-foreground animate-pulse font-medium">Authenticating Session...</p>
+          <Loader2 className="h-10 w-10 animate-spin text-primary mx-auto" />
+          <p className="text-muted-foreground animate-pulse tracking-widest uppercase text-xs">Authenticating Session...</p>
         </div>
       </div>
     );
@@ -73,30 +72,35 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-background/50">
       <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4 border-b pb-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4 border-b border-primary/10 pb-6">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight text-primary">Management Dashboard</h1>
-            <p className="text-muted-foreground mt-1">Oversee Style Maverik INC. orders and logistics.</p>
+            <h1 className="text-3xl font-bold tracking-tight text-primary font-serif">Management Dashboard</h1>
+            <p className="text-muted-foreground mt-1 text-sm">Style Maverik INC. Internal Logistics</p>
           </div>
-          <Button variant="outline" onClick={handleLogout} className="border-primary/20 hover:bg-primary/5">
-            <LogOut className="mr-2 h-4 w-4" /> Sign Out
-          </Button>
+          <div className="flex items-center gap-3">
+             <Button variant="ghost" size="sm" onClick={() => window.location.reload()} className="text-muted-foreground hover:text-primary">
+               <RefreshCw className="h-4 w-4 mr-2" /> Refresh
+             </Button>
+             <Button variant="outline" size="sm" onClick={handleLogout} className="border-primary/20 hover:bg-primary/5">
+                <LogOut className="mr-2 h-4 w-4" /> Sign Out
+              </Button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-          <Card className="bg-card/50 border-primary/20">
+          <Card className="bg-card/50 border-primary/20 shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+              <CardTitle className="text-[10px] uppercase tracking-widest text-muted-foreground">Total Revenue</CardTitle>
               <DollarSign className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">GH₵{totalRevenue.toFixed(2)}</div>
+              <div className="text-2xl font-bold">GH₵{totalRevenue.toLocaleString('en-GH', { minimumFractionDigits: 2 })}</div>
               <p className="text-xs text-muted-foreground mt-1">Gross sales to date</p>
             </CardContent>
           </Card>
-          <Card className="bg-card/50 border-primary/20">
+          <Card className="bg-card/50 border-primary/20 shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Orders</CardTitle>
+              <CardTitle className="text-[10px] uppercase tracking-widest text-muted-foreground">Total Orders</CardTitle>
               <Package className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
@@ -104,115 +108,124 @@ export default function AdminDashboard() {
               <p className="text-xs text-muted-foreground mt-1">All-time volume</p>
             </CardContent>
           </Card>
-          <Card className="bg-yellow-500/5 border-yellow-500/20">
+          <Card className="bg-yellow-500/5 border-yellow-500/10 shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-yellow-600 dark:text-yellow-500">Active Tasks</CardTitle>
-              <Loader2 className="h-4 w-4 text-yellow-500 animate-spin-slow" />
+              <CardTitle className="text-[10px] uppercase tracking-widest text-yellow-600/70 dark:text-yellow-500/70">Active Tasks</CardTitle>
+              <RefreshCw className="h-4 w-4 text-yellow-500 animate-spin-slow" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
                 {(orders as any[])?.filter(o => o.status === 'pending' || o.status === 'processing').length || 0}
               </div>
-              <p className="text-xs text-muted-foreground mt-1">Pending processing</p>
+              <p className="text-xs text-muted-foreground mt-1">Orders awaiting fulfilment</p>
             </CardContent>
           </Card>
-          <Card className="bg-green-500/5 border-green-500/20">
+          <Card className="bg-green-500/5 border-green-500/10 shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-green-600 dark:text-green-500">Fulfilled</CardTitle>
+              <CardTitle className="text-[10px] uppercase tracking-widest text-green-600/70 dark:text-green-500/70">Fulfilled</CardTitle>
               <Package className="h-4 w-4 text-green-500" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
                 {(orders as any[])?.filter(o => o.status === 'delivered').length || 0}
               </div>
-              <p className="text-xs text-muted-foreground mt-1">Orders delivered</p>
+              <p className="text-xs text-muted-foreground mt-1">Successfully delivered</p>
             </CardContent>
           </Card>
         </div>
 
-        <Card className="border-primary/10 shadow-lg">
-          <CardHeader className="flex flex-row items-center justify-between">
-            <div>
-              <CardTitle>Order History</CardTitle>
-              <CardDescription>Live stream of incoming customer transactions.</CardDescription>
+        <Card className="border-primary/10 shadow-xl overflow-hidden bg-card/30 backdrop-blur-sm">
+          <CardHeader className="bg-muted/30 border-b border-primary/5">
+            <div className="flex justify-between items-center">
+              <div>
+                <CardTitle className="font-serif">Live Order Feed</CardTitle>
+                <CardDescription>Track customer purchases and manage delivery statuses in real-time.</CardDescription>
+              </div>
             </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-0">
             {ordersLoading ? (
-              <div className="flex flex-col items-center justify-center py-20 space-y-4">
-                <Loader2 className="h-10 w-10 animate-spin text-primary" />
-                <p className="text-sm text-muted-foreground">Refreshing orders...</p>
+              <div className="flex flex-col items-center justify-center py-32 space-y-4">
+                <Loader2 className="h-8 w-8 animate-spin text-primary/40" />
+                <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Refreshing Order Stream...</p>
               </div>
             ) : (
-              <div className="rounded-md border bg-background/50 overflow-hidden">
+              <div className="overflow-x-auto">
                 <Table>
-                  <TableHeader className="bg-muted/30">
-                    <TableRow>
-                      <TableHead className="w-[200px]">Customer</TableHead>
-                      <TableHead>Location</TableHead>
-                      <TableHead>Items</TableHead>
-                      <TableHead>Total</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead className="text-right">Action</TableHead>
+                  <TableHeader className="bg-muted/10">
+                    <TableRow className="hover:bg-transparent border-primary/5">
+                      <TableHead className="text-[10px] uppercase tracking-widest py-4">Customer Details</TableHead>
+                      <TableHead className="text-[10px] uppercase tracking-widest">Location</TableHead>
+                      <TableHead className="text-[10px] uppercase tracking-widest">Order Summary</TableHead>
+                      <TableHead className="text-[10px] uppercase tracking-widest">Transaction</TableHead>
+                      <TableHead className="text-[10px] uppercase tracking-widest">Status</TableHead>
+                      <TableHead className="text-right text-[10px] uppercase tracking-widest pr-6">Management</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {(orders as any[])?.map((order) => (
-                      <TableRow key={order.id} className="hover:bg-muted/10 transition-colors">
-                        <TableCell>
+                      <TableRow key={order.id} className="hover:bg-muted/20 transition-colors border-primary/5">
+                        <TableCell className="py-5">
                           <div className="flex flex-col">
-                             <div className="font-semibold text-sm flex items-center gap-1.5">
-                               <Mail className="h-3 w-3 text-muted-foreground" />
+                             <div className="font-semibold text-sm flex items-center gap-2">
+                               <Mail className="h-3.5 w-3.5 text-primary/60" />
                                {order.customerEmail}
                              </div>
-                             <div className="text-[10px] text-muted-foreground flex items-center gap-1 mt-0.5">
-                               <CalendarIcon className="h-2.5 w-2.5" />
-                               {order.createdAt?.toDate ? order.createdAt.toDate().toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' }) : 'Just now'}
+                             <div className="text-[10px] text-muted-foreground flex items-center gap-1 mt-1 font-medium">
+                               <CalendarIcon className="h-3 w-3" />
+                               {order.createdAt?.toDate ? order.createdAt.toDate().toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' }) : 'Processing...'}
                              </div>
                           </div>
                         </TableCell>
                         <TableCell>
-                          <div className="flex items-center gap-1.5 text-sm">
-                            <MapPin className="h-3 w-3 text-primary/60" />
+                          <div className="flex items-center gap-2 text-sm font-medium">
+                            <MapPin className="h-3.5 w-3.5 text-primary/60 shrink-0" />
                             {order.location}
                           </div>
                         </TableCell>
                         <TableCell>
-                          <div className="text-xs space-y-1 py-1">
+                          <div className="text-xs space-y-1.5 py-1">
                             {order.items?.map((item: any, idx: number) => (
-                              <div key={idx} className="flex gap-2">
-                                <span className="font-medium text-foreground">{item.name}</span>
-                                <span className="text-muted-foreground">({item.size}, {item.color}) x{item.quantity}</span>
+                              <div key={idx} className="flex gap-2 items-center">
+                                <Badge variant="outline" className="h-4 px-1 text-[8px] border-primary/20 text-primary">x{item.quantity}</Badge>
+                                <span className="font-semibold text-foreground/90">{item.name}</span>
+                                <span className="text-muted-foreground italic">({item.size}, {item.color})</span>
                               </div>
                             ))}
                           </div>
                         </TableCell>
-                        <TableCell className="font-bold whitespace-nowrap">GH₵{order.total?.toFixed(2)}</TableCell>
+                        <TableCell>
+                           <div className="flex flex-col">
+                              <span className="font-bold text-sm">GH₵{order.total?.toFixed(2)}</span>
+                              <span className="text-[9px] text-muted-foreground font-mono uppercase opacity-60">REF: {order.paymentReference?.slice(-8) || 'N/A'}</span>
+                           </div>
+                        </TableCell>
                         <TableCell>
                           <Badge 
-                            variant={order.status === 'delivered' ? 'outline' : 'default'} 
-                            className={`capitalize px-2 py-0 h-6 text-[10px] font-bold ${
+                            variant="secondary" 
+                            className={`capitalize px-2 py-0.5 h-6 text-[10px] font-bold shadow-none ${
                               order.status === 'pending' ? 'bg-yellow-500/10 text-yellow-600 border-yellow-500/20' : 
                               order.status === 'processing' ? 'bg-blue-500/10 text-blue-600 border-blue-500/20' :
+                              order.status === 'shipped' ? 'bg-purple-500/10 text-purple-600 border-purple-500/20' :
                               order.status === 'delivered' ? 'bg-green-500/10 text-green-600 border-green-500/20' : ''
                             }`}
                           >
                             {order.status}
                           </Badge>
                         </TableCell>
-                        <TableCell className="text-right">
+                        <TableCell className="text-right pr-6">
                           <Select
                             defaultValue={order.status}
                             onValueChange={(val) => handleStatusChange(order.id, val)}
                           >
-                            <SelectTrigger className="w-[110px] h-8 text-[10px] ml-auto border-primary/20">
-                              <SelectValue placeholder="Status" />
+                            <SelectTrigger className="w-[120px] h-8 text-[10px] ml-auto border-primary/20 bg-background/50 hover:bg-background">
+                              <SelectValue placeholder="Action" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="pending">Pending</SelectItem>
-                              <SelectItem value="processing">Processing</SelectItem>
-                              <SelectItem value="shipped">Shipped</SelectItem>
-                              <SelectItem value="delivered">Delivered</SelectItem>
+                              <SelectItem value="pending">Mark Pending</SelectItem>
+                              <SelectItem value="processing">Start Processing</SelectItem>
+                              <SelectItem value="shipped">Mark Shipped</SelectItem>
+                              <SelectItem value="delivered">Mark Delivered</SelectItem>
                             </SelectContent>
                           </Select>
                         </TableCell>
@@ -220,10 +233,10 @@ export default function AdminDashboard() {
                     ))}
                     {(orders as any[])?.length === 0 && (
                       <TableRow>
-                        <TableCell colSpan={6} className="text-center py-20">
-                          <div className="flex flex-col items-center gap-2">
-                            <Package className="h-10 w-10 text-muted-foreground/20" />
-                            <p className="text-muted-foreground">No orders recorded yet.</p>
+                        <TableCell colSpan={6} className="text-center py-32">
+                          <div className="flex flex-col items-center gap-3 opacity-30">
+                            <Package className="h-12 w-12 text-primary" />
+                            <p className="text-xs uppercase tracking-widest font-medium">No sales recorded yet.</p>
                           </div>
                         </TableCell>
                       </TableRow>
@@ -234,6 +247,11 @@ export default function AdminDashboard() {
             )}
           </CardContent>
         </Card>
+      </div>
+      <div className="pb-10 text-center">
+         <p className="text-[10px] text-muted-foreground/30 uppercase tracking-[0.4em] font-medium">
+           Style Maverik INC. Internal Access Only
+         </p>
       </div>
     </div>
   );
