@@ -8,7 +8,7 @@
  * Project Settings -> General -> Your apps -> SDK setup and configuration.
  */
 export const firebaseConfig = {
-  apiKey: "REPLACE_WITH_YOUR_API_KEY",
+  apiKey: "AIzaSyB0GllgoBWNkOXL8w1BRyyryML7Ah_X5Sc",
   authDomain: "REPLACE_WITH_YOUR_PROJECT_ID.firebaseapp.com",
   projectId: "REPLACE_WITH_YOUR_PROJECT_ID",
   storageBucket: "REPLACE_WITH_YOUR_PROJECT_ID.firebasestorage.app",
