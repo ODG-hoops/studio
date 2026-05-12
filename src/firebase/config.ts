@@ -2,10 +2,11 @@
 
 /**
  * @fileOverview Firebase configuration object.
- *
- * IMPORTANT: You must replace the placeholder values below with your actual
- * Firebase project configuration keys found in the Firebase Console:
- * Project Settings -> General -> Your apps -> SDK setup and configuration.
+ * 
+ * To find these values:
+ * 1. Go to Firebase Console -> Project Settings -> General.
+ * 2. Scroll down to "Your apps" and select your Web app.
+ * 3. Copy the values from the firebaseConfig object provided there.
  */
 export const firebaseConfig = {
   apiKey: "AIzaSyB0GllgoBWNkOXL8w1BRyyryML7Ah_X5Sc",
