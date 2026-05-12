@@ -9,20 +9,19 @@ This project is now fully configured with a private Admin Portal and automated o
 
 *   **Access Code:** `@admin.stylemaverik2021`
 
-### ⚠️ IMPORTANT: Final Activation Step
-To enable the login system, you **must** perform these steps in your Firebase Console:
+### ⚠️ IMPORTANT: One-Time Setup
+To activate your access code, follow these 2 simple steps in your Firebase Console:
 
-1.  **Enable Auth Provider:**
-    *   Go to the **Firebase Console** -> **Authentication**.
-    *   Click the **Sign-in method** tab.
+1.  **Enable Provider**:
+    *   Go to **Authentication** -> **Sign-in method**.
     *   Click **Add new provider** and select **Email/Password**.
-    *   Ensure it is **Enabled** and click **Save**.
+    *   Click **Save**.
 
-2.  **Create Management User:**
+2.  **Create Admin User**:
     *   Go to the **Users** tab (still within Authentication).
     *   Click **Add User**.
-    *   **Email:** `management@stylemaverik.com`
-    *   **Password:** `@admin.stylemaverik2021`
+    *   **Email:** `admin@stylemaverik.com` (Use this exact ID)
+    *   **Password:** `@admin.stylemaverik2021` (This is your access code)
 
 ---
 
@@ -31,8 +30,7 @@ To enable the login system, you **must** perform these steps in your Firebase Co
 When a customer completes a purchase:
 1.  **Payment:** Verified instantly via Paystack.
 2.  **Database:** The order (items, total, location) is saved to your private Firestore database.
-3.  **Notification:** An automated email is sent to you via **Resend**.
-4.  **Dashboard:** The order appears instantly in your Management Dashboard.
+3.  **Dashboard:** The order appears instantly in your Management Dashboard.
 
 ## 📊 Using the Dashboard
 

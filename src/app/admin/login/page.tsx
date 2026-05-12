@@ -26,7 +26,7 @@ export default function AdminLoginPage() {
     if (!auth) {
       toast({
         title: "System Error",
-        description: "Firebase connection not established. Please check your config.",
+        description: "Firebase connection not established.",
         variant: "destructive",
       });
       return;
@@ -45,10 +45,9 @@ export default function AdminLoginPage() {
     setConfigError(false);
     
     try {
-      // The requested code is used as the password for the management account
-      // Management Email is fixed to management@stylemaverik.com
-      // Code: @admin.stylemaverik2021
-      await signInWithEmailAndPassword(auth, 'management@stylemaverik.com', accessCode);
+      // Use a fixed internal ID and the access code as the password
+      // Your Access Code: @admin.stylemaverik2021
+      await signInWithEmailAndPassword(auth, 'admin@stylemaverik.com', accessCode);
       
       toast({ title: "Authorized", description: "Identity verified. Redirecting..." });
       router.push('/admin/dashboard');
@@ -58,14 +57,12 @@ export default function AdminLoginPage() {
       let errorMessage = "The access code provided is incorrect.";
       
       if (error.code === 'auth/api-key-not-valid' || error.code === 'auth/invalid-api-key') {
-        errorMessage = "Firebase API Key error. Verify settings in src/firebase/config.ts.";
+        errorMessage = "Configuration error. Please check your Firebase settings.";
         setConfigError(true);
       } else if (error.code === 'auth/configuration-not-found') {
-        errorMessage = "Provider not enabled. Go to Firebase Console -> Authentication -> Sign-in Method and enable 'Email/Password'.";
-      } else if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
-        errorMessage = "Access denied. Ensure the user exists in Firebase Console.";
-      } else if (error.code === 'auth/network-request-failed') {
-        errorMessage = "Check your internet connection and try again.";
+        errorMessage = "System not initialized. Please enable Email/Password in Firebase Console.";
+      } else if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+        errorMessage = "Invalid Access Code.";
       }
 
       toast({
@@ -83,9 +80,9 @@ export default function AdminLoginPage() {
       {configError && (
         <Alert variant="destructive" className="max-w-md mb-6 bg-destructive/10 border-destructive/20 text-destructive-foreground">
           <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Config Verification Needed</AlertTitle>
+          <AlertTitle>Setup Required</AlertTitle>
           <AlertDescription className="text-xs">
-            The Firebase API Key appears invalid. Please verify the configuration in <code>src/firebase/config.ts</code>.
+            Firebase keys are missing or invalid. Verify <code>src/firebase/config.ts</code>.
           </AlertDescription>
         </Alert>
       )}
@@ -97,13 +94,13 @@ export default function AdminLoginPage() {
                 <ShieldCheck className="h-8 w-8 text-primary" />
              </div>
           </div>
-          <CardTitle className="text-2xl font-bold tracking-tight">Internal Access</CardTitle>
-          <CardDescription>Enter code to access management protocols.</CardDescription>
+          <CardTitle className="text-2xl font-bold tracking-tight">Management Access</CardTitle>
+          <CardDescription>Enter your code to access the order dashboard.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="accessCode" className="text-[10px] uppercase tracking-widest text-muted-foreground ml-1">Access Token</Label>
+              <Label htmlFor="accessCode" className="text-[10px] uppercase tracking-widest text-muted-foreground ml-1">Admin Access Code</Label>
               <Input
                 id="accessCode"
                 type="password"
@@ -116,12 +113,12 @@ export default function AdminLoginPage() {
               />
             </div>
             <Button type="submit" className="w-full h-12 text-lg font-bold shadow-lg" disabled={loading}>
-              {loading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : "Verify Identity"}
+              {loading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : "Open Dashboard"}
             </Button>
           </form>
           <div className="mt-8 pt-6 border-t border-primary/10">
              <p className="text-[10px] text-center text-muted-foreground uppercase tracking-[0.2em] font-medium opacity-50">
-               Style Maverik INC. Secure Environment
+               Style Maverik INC. Internal Secure Portal
              </p>
           </div>
         </CardContent>
