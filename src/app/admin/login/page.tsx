@@ -9,11 +9,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Lock } from 'lucide-react';
+import { Loader2, ShieldCheck } from 'lucide-react';
 
 export default function AdminLoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [accessCode, setAccessCode] = useState('');
   const [loading, setLoading] = useState(false);
   const auth = useAuth();
   const router = useRouter();
@@ -25,13 +24,16 @@ export default function AdminLoginPage() {
 
     setLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      toast({ title: "Welcome back", description: "Logged in successfully." });
+      // We use a fixed management email and use the access code as the password
+      // This satisfies Firestore security rules while providing a simple login experience.
+      await signInWithEmailAndPassword(auth, 'management@stylemaverik.com', accessCode);
+      toast({ title: "Authorized", description: "Welcome to the management portal." });
       router.push('/admin/dashboard');
     } catch (error: any) {
+      console.error("Auth error:", error);
       toast({
-        title: "Login failed",
-        description: error.message || "Invalid credentials.",
+        title: "Access Denied",
+        description: "The access code provided is incorrect or the portal is not configured.",
         variant: "destructive",
       });
     } finally {
@@ -41,45 +43,37 @@ export default function AdminLoginPage() {
 
   return (
     <div className="container mx-auto px-4 py-16 md:py-32 flex justify-center items-center">
-      <Card className="w-full max-w-md border-primary/20 shadow-xl">
+      <Card className="w-full max-w-md border-primary/20 shadow-xl bg-card/50 backdrop-blur-sm">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
-             <div className="p-3 bg-primary/10 rounded-full">
-                <Lock className="h-6 w-6 text-primary" />
+             <div className="p-4 bg-primary/10 rounded-full border border-primary/20">
+                <ShieldCheck className="h-8 w-8 text-primary" />
              </div>
           </div>
-          <CardTitle className="text-2xl">Admin Portal</CardTitle>
-          <CardDescription>Enter your credentials to access management tools.</CardDescription>
+          <CardTitle className="text-2xl font-bold tracking-tight">Management Access</CardTitle>
+          <CardDescription>Enter your secure access code to manage Style Maverik INC.</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleLogin} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="accessCode">Access Code</Label>
               <Input
-                id="email"
-                type="email"
-                placeholder="admin@stylemaverik.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="bg-muted/50"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
+                id="accessCode"
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••••••"
+                value={accessCode}
+                onChange={(e) => setAccessCode(e.target.value)}
                 required
-                className="bg-muted/50"
+                className="bg-background border-primary/20 focus:border-primary transition-colors text-center text-lg tracking-widest"
               />
             </div>
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Sign In"}
+            <Button type="submit" className="w-full h-12 text-lg font-semibold" disabled={loading}>
+              {loading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : "Verify Identity"}
             </Button>
           </form>
+          <p className="mt-6 text-[10px] text-center text-muted-foreground uppercase tracking-[0.2em]">
+            Style Maverik INC. Internal Systems
+          </p>
         </CardContent>
       </Card>
     </div>
