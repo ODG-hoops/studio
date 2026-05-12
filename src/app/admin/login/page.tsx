@@ -25,7 +25,7 @@ export default function AdminLoginPage() {
     setLoading(true);
     try {
       // We use a fixed management email and use the access code as the password
-      // This satisfies Firestore security rules while providing a simple login experience.
+      // The requested code is @admin.stylemaverik2021
       await signInWithEmailAndPassword(auth, 'management@stylemaverik.com', accessCode);
       toast({ title: "Authorized", description: "Welcome to the management portal." });
       router.push('/admin/dashboard');
