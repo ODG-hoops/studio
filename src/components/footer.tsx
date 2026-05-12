@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
-import { Instagram, Twitter, Facebook, ArrowRight } from 'lucide-react';
+import { Instagram, Twitter, Facebook, ArrowRight, Lock } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -40,6 +40,11 @@ export function Footer() {
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </form>
+              <div className="mt-6">
+                <Link href="/admin/login" className="text-[10px] uppercase tracking-widest text-muted-foreground/30 hover:text-primary flex items-center gap-1 transition-colors">
+                  <Lock className="h-2 w-2" /> Admin Portal
+                </Link>
+              </div>
             </div>
           </div>
         </div>
