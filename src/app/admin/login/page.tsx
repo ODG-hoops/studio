@@ -9,11 +9,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, ShieldCheck } from 'lucide-react';
+import { Loader2, ShieldCheck, AlertCircle } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 export default function AdminLoginPage() {
   const [accessCode, setAccessCode] = useState('');
   const [loading, setLoading] = useState(false);
+  const [configError, setConfigError] = useState(false);
   const auth = useAuth();
   const router = useRouter();
   const { toast } = useToast();
@@ -24,7 +26,7 @@ export default function AdminLoginPage() {
     if (!auth) {
       toast({
         title: "System Error",
-        description: "Firebase is not initialized. Please check your configuration.",
+        description: "Firebase is not initialized. Please check your configuration in src/firebase/config.ts.",
         variant: "destructive",
       });
       return;
@@ -40,6 +42,8 @@ export default function AdminLoginPage() {
     }
 
     setLoading(true);
+    setConfigError(false);
+    
     try {
       // The requested code is used as the password for the management account
       // Code: @admin.stylemaverik2021
@@ -53,9 +57,12 @@ export default function AdminLoginPage() {
       let errorMessage = "The access code provided is incorrect.";
       
       if (error.code === 'auth/api-key-not-valid' || error.code === 'auth/invalid-api-key') {
-        errorMessage = "Firebase configuration is invalid. Please update your API key in src/firebase/config.ts.";
+        errorMessage = "Your Firebase API Key is invalid or missing. Please update src/firebase/config.ts with your real keys from the Firebase Console.";
+        setConfigError(true);
       } else if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
         errorMessage = "Access denied. Verify your code or ensure the management user exists in Firebase.";
+      } else if (error.code === 'auth/network-request-failed') {
+        errorMessage = "Network error. Please check your internet connection.";
       }
 
       toast({
@@ -69,7 +76,17 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-16 md:py-32 flex justify-center items-center">
+    <div className="container mx-auto px-4 py-16 md:py-32 flex flex-col justify-center items-center gap-6">
+      {configError && (
+        <Alert variant="destructive" className="max-w-md bg-destructive/10 border-destructive/20 text-destructive-foreground">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Configuration Required</AlertTitle>
+          <AlertDescription className="text-xs">
+            Your Firebase API Key is not set correctly. You must update the <code>src/firebase/config.ts</code> file with the configuration from your Firebase Console (Project Settings) to enable login.
+          </AlertDescription>
+        </Alert>
+      )}
+
       <Card className="w-full max-w-md border-primary/20 shadow-xl bg-card/50 backdrop-blur-sm">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
