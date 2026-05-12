@@ -1,4 +1,3 @@
-// src/app/verify/page.tsx
 'use client';
 
 import { useEffect, useState, Suspense } from 'react';
@@ -7,6 +6,8 @@ import { handlePaymentVerification, handleSendOrder } from '@/app/actions';
 import { Loader2, AlertTriangle, CheckCircle } from 'lucide-react';
 import type { Product } from '@/lib/types';
 import { Button } from '@/components/ui/button';
+import { useFirestore } from '@/firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 type CartItem = Product & { quantity: number; size: string; color: string; };
 
@@ -20,6 +21,7 @@ interface OrderDetails {
 function Verify() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const db = useFirestore();
   const [status, setStatus] = useState<'verifying' | 'success' | 'failed'>('verifying');
   const [message, setMessage] = useState('Verifying your payment, please wait...');
 
@@ -48,7 +50,22 @@ function Verify() {
 
         const orderDetails: OrderDetails = JSON.parse(pendingOrderString);
 
-        // Send order notification email and store the result for the confirmation page
+        // 1. Save order to Firestore for the Admin Portal
+        if (db) {
+          try {
+            await addDoc(collection(db, 'orders'), {
+              ...orderDetails,
+              status: 'pending',
+              paymentReference: reference,
+              createdAt: serverTimestamp(),
+            });
+          } catch (e) {
+            console.error("Failed to save order to database", e);
+            // We continue anyway so the customer gets their confirmation
+          }
+        }
+
+        // 2. Send order notification email
         const notificationResult = await handleSendOrder(orderDetails);
         if (notificationResult.success) {
             localStorage.setItem('notification_status', 'sent');
@@ -56,13 +73,13 @@ function Verify() {
             localStorage.setItem('notification_status', 'failed');
         }
         
-        // Prepare for confirmation page
+        // 3. Prepare for confirmation page
         localStorage.setItem('order_confirmation', JSON.stringify(orderDetails));
         
         // Clean up
         localStorage.removeItem(`pending_order_${reference}`);
         localStorage.removeItem('cart');
-        window.dispatchEvent(new Event('storage')); // Update header cart count
+        window.dispatchEvent(new Event('storage'));
 
         // Redirect to confirmation page
         router.push('/confirmation');
@@ -70,13 +87,12 @@ function Verify() {
       } else {
         setStatus('failed');
         setMessage(verificationResult.message || 'Payment verification failed. Your order was not completed. Please try again.');
-        // Also clean up the failed pending order
         localStorage.removeItem(`pending_order_${reference}`);
       }
     };
 
     verify();
-  }, [router, searchParams]);
+  }, [router, searchParams, db]);
 
   return (
     <div className="container mx-auto px-4 py-16 md:py-24 flex items-center justify-center" style={{ minHeight: '60vh' }}>
@@ -94,7 +110,6 @@ function Verify() {
     </div>
   );
 }
-
 
 export default function VerifyPage() {
     return (

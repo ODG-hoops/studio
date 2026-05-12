@@ -1,0 +1,28 @@
+{
+  "entities": {
+    "Order": {
+      "title": "Order",
+      "description": "A customer order containing items and delivery info.",
+      "type": "object",
+      "properties": {
+        "customerEmail": { "type": "string", "format": "email" },
+        "items": { "type": "array" },
+        "total": { "type": "number" },
+        "location": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "processing", "shipped", "delivered"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "paymentReference": { "type": "string" }
+      },
+      "required": ["customerEmail", "items", "total", "location", "status", "createdAt"]
+    }
+  },
+  "auth": {
+    "providers": ["password"]
+  },
+  "firestore": {
+    "/orders/{orderId}": {
+      "schema": "#/backend/entities/Order",
+      "description": "Collection of orders placed by customers."
+    }
+  }
+}
