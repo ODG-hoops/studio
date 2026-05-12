@@ -10,11 +10,19 @@ This project is now fully configured with a private Admin Portal and automated o
 *   **Access Code:** `@admin.stylemaverik2021`
 
 ### ⚠️ IMPORTANT: Final Activation Step
-To enable this code, you **must** manually create the management user in your Firebase Console:
-1.  Go to the **Firebase Console** -> **Authentication** -> **Users**.
-2.  Click **Add User**.
-3.  **Email:** `management@stylemaverik.com`
-4.  **Password:** `@admin.stylemaverik2021`
+To enable the login system, you **must** perform these steps in your Firebase Console:
+
+1.  **Enable Auth Provider:**
+    *   Go to the **Firebase Console** -> **Authentication**.
+    *   Click the **Sign-in method** tab.
+    *   Click **Add new provider** and select **Email/Password**.
+    *   Ensure it is **Enabled** and click **Save**.
+
+2.  **Create Management User:**
+    *   Go to the **Users** tab (still within Authentication).
+    *   Click **Add User**.
+    *   **Email:** `management@stylemaverik.com`
+    *   **Password:** `@admin.stylemaverik2021`
 
 ---
 

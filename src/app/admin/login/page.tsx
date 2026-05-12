@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -61,8 +60,10 @@ export default function AdminLoginPage() {
       if (error.code === 'auth/api-key-not-valid' || error.code === 'auth/invalid-api-key') {
         errorMessage = "Firebase API Key error. Verify settings in src/firebase/config.ts.";
         setConfigError(true);
+      } else if (error.code === 'auth/configuration-not-found') {
+        errorMessage = "Provider not enabled. Go to Firebase Console -> Authentication -> Sign-in Method and enable 'Email/Password'.";
       } else if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
-        errorMessage = "Access denied. Ensure user exists in Firebase Console.";
+        errorMessage = "Access denied. Ensure the user exists in Firebase Console.";
       } else if (error.code === 'auth/network-request-failed') {
         errorMessage = "Check your internet connection and try again.";
       }
