@@ -5,11 +5,11 @@ import { useRouter } from 'next/navigation';
 import { useAuth, useFirestore, useUser, useCollection } from '@/firebase';
 import { collection, query, orderBy, doc, updateDoc, deleteDoc, addDoc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Loader2, Package, LogOut, Calendar as CalendarIcon, DollarSign, MapPin, Mail, RefreshCw, Trash2, ExternalLink, Search, Plus, PlusCircle, Edit3, Image as ImageIcon } from 'lucide-react';
+import { Loader2, LogOut, Trash2, Search, Plus, Edit3, Image as ImageIcon } from 'lucide-react';
 import { signOut } from 'firebase/auth';
 import { useToast } from '@/hooks/use-toast';
 import { errorEmitter } from '@/firebase/error-emitter';
@@ -18,7 +18,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { products as initialProducts } from '@/lib/data';
 
 export default function AdminDashboard() {
@@ -37,7 +36,6 @@ export default function AdminDashboard() {
     name: '',
     price: '',
     category: '',
-    description: '',
     image: '',
     imageHint: '',
     colors: 'White, Black, Blue',
@@ -80,7 +78,6 @@ export default function AdminDashboard() {
       name: productForm.name,
       price: parseFloat(productForm.price),
       category: productForm.category,
-      description: productForm.description,
       image: productForm.image,
       imageHint: productForm.imageHint,
       colors: productForm.colors.split(',').map(s => s.trim()).filter(Boolean),
@@ -103,13 +100,14 @@ export default function AdminDashboard() {
 
     setIsProductDialogOpen(false);
     setEditingProduct(null);
-    setProductForm({ name: '', price: '', category: '', description: '', image: '', imageHint: '', colors: 'White, Black, Blue', sizes: 'S, M, L, XL, XXL' });
+    setProductForm({ name: '', price: '', category: '', image: '', imageHint: '', colors: 'White, Black, Blue', sizes: 'S, M, L, XL, XXL' });
   };
 
   const seedInventory = () => {
     if (!db || firestoreProducts?.length) return;
     initialProducts.forEach(prod => {
-      addDoc(collection(db, 'products'), { ...prod, updatedAt: serverTimestamp() });
+      const { description, ...rest } = prod;
+      addDoc(collection(db, 'products'), { ...rest, updatedAt: serverTimestamp() });
     });
     toast({ title: "Inventory Initialized", description: "Seeded the database with default products." });
   };
@@ -253,7 +251,7 @@ export default function AdminDashboard() {
                 )}
                 <Dialog open={isProductDialogOpen} onOpenChange={setIsProductDialogOpen}>
                   <DialogTrigger asChild>
-                    <Button size="sm" onClick={() => { setEditingProduct(null); setProductForm({ name: '', price: '', category: '', description: '', image: '', imageHint: '', colors: 'White, Black, Blue', sizes: 'S, M, L, XL, XXL' }); }}>
+                    <Button size="sm" onClick={() => { setEditingProduct(null); setProductForm({ name: '', price: '', category: '', image: '', imageHint: '', colors: 'White, Black, Blue', sizes: 'S, M, L, XL, XXL' }); }}>
                       <Plus className="h-4 w-4 mr-2" /> Add Goods
                     </Button>
                   </DialogTrigger>
@@ -282,10 +280,6 @@ export default function AdminDashboard() {
                           <Label htmlFor="image">Image URL</Label>
                           <Input id="image" required value={productForm.image} onChange={(e) => setProductForm({...productForm, image: e.target.value})} placeholder="https://..." />
                         </div>
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="description">Description</Label>
-                        <Textarea id="description" required value={productForm.description} onChange={(e) => setProductForm({...productForm, description: e.target.value})} rows={3} />
                       </div>
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
@@ -332,7 +326,6 @@ export default function AdminDashboard() {
                             name: product.name,
                             price: product.price.toString(),
                             category: product.category,
-                            description: product.description,
                             image: product.image,
                             imageHint: product.imageHint || '',
                             colors: product.colors.join(', '),
@@ -347,7 +340,6 @@ export default function AdminDashboard() {
                         </Button>
                       </div>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-2 line-clamp-2">{product.description}</p>
                   </CardContent>
                 </Card>
               ))}

@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
@@ -15,6 +14,7 @@ import { cn } from '@/lib/utils';
 import type { Product } from '@/lib/types';
 import { colorNameToHex } from '@/lib/colors';
 import { products as fallbackProducts } from '@/lib/data';
+import { Badge } from '@/components/ui/badge';
 
 type CartItem = Product & { quantity: number; size: string; color: string; };
 
@@ -105,8 +105,6 @@ export default function ProductDetailPage() {
             <h1 className="text-4xl font-bold tracking-tight font-serif">{product.name}</h1>
             <p className="text-2xl text-primary mt-2 font-bold">GH₵{product.price?.toFixed(2)}</p>
           </div>
-          
-          <p className="text-muted-foreground leading-relaxed">{product.description}</p>
           
           <div className="space-y-4 pt-4 border-t border-primary/10">
             <div>
