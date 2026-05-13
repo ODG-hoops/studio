@@ -45,7 +45,7 @@ export default function AdminLoginPage() {
     setConfigError(false);
     
     try {
-      // Use your official business email as the hidden secure ID
+      // Use official business email as the hidden secure ID
       // The user-provided access code serves as the password
       // Access Code: @admin.stylemaverik2021
       await signInWithEmailAndPassword(auth, 'stylemaverikclothing@gmail.com', accessCode);
@@ -53,7 +53,7 @@ export default function AdminLoginPage() {
       toast({ title: "Authorized", description: "Identity verified. Redirecting..." });
       router.push('/admin/dashboard');
     } catch (error: any) {
-      console.error("Auth error details:", error.code, error.message);
+      console.error("Auth error code:", error.code);
       
       let errorMessage = "The access code provided is incorrect.";
       
@@ -95,13 +95,13 @@ export default function AdminLoginPage() {
                 <ShieldCheck className="h-8 w-8 text-primary" />
              </div>
           </div>
-          <CardTitle className="text-2xl font-bold tracking-tight">Management Access</CardTitle>
-          <CardDescription>Enter your code to access the order dashboard.</CardDescription>
+          <CardTitle className="text-2xl font-bold tracking-tight font-serif">Management Access</CardTitle>
+          <CardDescription>Enter your access code to manage orders.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="accessCode" className="text-[10px] uppercase tracking-widest text-muted-foreground ml-1">Admin Access Code</Label>
+              <Label htmlFor="accessCode" className="text-[10px] uppercase tracking-widest text-muted-foreground ml-1 font-bold">Admin Access Code</Label>
               <Input
                 id="accessCode"
                 type="password"
