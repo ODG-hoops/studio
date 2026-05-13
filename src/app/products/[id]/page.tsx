@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
@@ -113,9 +112,6 @@ export default function ProductDetailPage() {
           <div>
             <div className="flex items-center gap-3 mb-2">
               <Badge variant="outline" className="text-[10px] uppercase tracking-widest">{product.category}</Badge>
-              {product.stock > 0 && product.stock <= 5 && (
-                <Badge variant="secondary" className="text-[10px] bg-orange-500/20 text-orange-500 border-orange-500/20">Only {product.stock} left</Badge>
-              )}
             </div>
             <h1 className="text-4xl font-bold tracking-tight font-serif">{product.name}</h1>
             <p className="text-2xl text-primary mt-2 font-bold">GH₵{product.price?.toFixed(2)}</p>
