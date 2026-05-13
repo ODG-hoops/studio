@@ -9,19 +9,20 @@ This project is now fully configured with a private Admin Portal and automated o
 
 *   **Access Code:** `@admin.stylemaverik2021`
 
-### ⚠️ IMPORTANT: One-Time Setup
-To activate your access code, follow these 2 simple steps in your Firebase Console:
+### ⚠️ CRITICAL: Final Setup Steps
+The login will fail with "Invalid Credential" until you perform these 2 steps in your Firebase Console:
 
-1.  **Enable Provider**:
+1.  **Enable Email/Password Provider**:
     *   Go to **Authentication** -> **Sign-in method**.
     *   Click **Add new provider** and select **Email/Password**.
-    *   Click **Save**.
+    *   Ensure it is toggled to **Enabled** and click **Save**.
 
-2.  **Create Admin User**:
+2.  **Create the Admin User Record**:
     *   Go to the **Users** tab (still within Authentication).
     *   Click **Add User**.
-    *   **Email:** `admin@stylemaverik.com` (Use this exact ID)
+    *   **Email:** `admin@stylemaverik.com` (Type this exactly)
     *   **Password:** `@admin.stylemaverik2021` (This is your access code)
+    *   Click **Add User**.
 
 ---
 

@@ -45,15 +45,14 @@ export default function AdminLoginPage() {
     setConfigError(false);
     
     try {
-      // Background management ID: admin@stylemaverik.com
-      // The user-provided access code serves as the password
-      // Access Code: @admin.stylemaverik2021
+      // Internal ID: admin@stylemaverik.com
+      // Access Code (Password): @admin.stylemaverik2021
       await signInWithEmailAndPassword(auth, 'admin@stylemaverik.com', accessCode);
       
       toast({ title: "Authorized", description: "Identity verified. Redirecting..." });
       router.push('/admin/dashboard');
     } catch (error: any) {
-      console.error("Auth error:", error);
+      console.error("Auth error details:", error.code, error.message);
       
       let errorMessage = "The access code provided is incorrect.";
       
@@ -61,9 +60,9 @@ export default function AdminLoginPage() {
         errorMessage = "Configuration error. Please check your Firebase settings.";
         setConfigError(true);
       } else if (error.code === 'auth/configuration-not-found') {
-        errorMessage = "System not initialized. Please enable Email/Password in Firebase Console.";
-      } else if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
-        errorMessage = "Invalid Access Code.";
+        errorMessage = "Email/Password provider is not enabled in Firebase Console.";
+      } else if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+        errorMessage = "Invalid Access Code. Please ensure you created the user 'admin@stylemaverik.com' in your Firebase Console.";
       }
 
       toast({
@@ -83,7 +82,7 @@ export default function AdminLoginPage() {
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Setup Required</AlertTitle>
           <AlertDescription className="text-xs">
-            Firebase keys are missing or invalid. Verify <code>src/firebase/config.ts</code>.
+            Firebase keys are missing or invalid. Verify <code>src/firebase/config.ts</code> matches your Firebase Console Project Settings.
           </AlertDescription>
         </Alert>
       )}
