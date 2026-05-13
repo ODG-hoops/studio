@@ -13,5 +13,12 @@ service cloud.firestore {
       allow read: if true;
       allow write: if request.auth != null;
     }
+
+    // Rate Limits: System only. 
+    // Note: Since we use Client SDK in Server Actions, we allow specific create/update 
+    // but in a production environment with Admin SDK, this would be 'if false'
+    match /rateLimits/{limitId} {
+      allow read, write: if false; 
+    }
   }
 }

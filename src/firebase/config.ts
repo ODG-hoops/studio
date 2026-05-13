@@ -1,5 +1,3 @@
-'use client';
-
 /**
  * @fileOverview Firebase configuration object.
  * 

@@ -1,3 +1,4 @@
+
 {
   "entities": {
     "Order": {
@@ -30,6 +31,17 @@
         "updatedAt": { "type": "string", "format": "date-time" }
       },
       "required": ["name", "price", "image", "category", "colors", "sizes"]
+    },
+    "RateLimit": {
+      "title": "Rate Limit",
+      "description": "Internal record used for server-side rate limiting.",
+      "type": "object",
+      "properties": {
+        "attempts": { "type": "number" },
+        "lastAttempt": { "type": "string", "format": "date-time" },
+        "blockedUntil": { "type": "string", "format": "date-time" }
+      },
+      "required": ["attempts", "lastAttempt"]
     }
   },
   "auth": {
@@ -43,6 +55,10 @@
     "/products/{productId}": {
       "schema": "#/backend/entities/Product",
       "description": "Collection of products available in the shop."
+    },
+    "/rateLimits/{limitId}": {
+      "schema": "#/backend/entities/RateLimit",
+      "description": "Internal collection for tracking request attempts."
     }
   }
 }

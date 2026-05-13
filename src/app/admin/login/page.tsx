@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -11,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, ShieldCheck, AlertCircle } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { checkLoginBlock } from '@/app/actions';
 
 export default function AdminLoginPage() {
   const [accessCode, setAccessCode] = useState('');
@@ -24,20 +26,12 @@ export default function AdminLoginPage() {
     e.preventDefault();
     
     if (!auth) {
-      toast({
-        title: "System Error",
-        description: "Firebase connection not established.",
-        variant: "destructive",
-      });
+      toast({ title: "System Error", description: "Firebase connection not established.", variant: "destructive" });
       return;
     }
 
     if (!accessCode) {
-      toast({
-        title: "Code Required",
-        description: "Please enter your management access code.",
-        variant: "destructive",
-      });
+      toast({ title: "Code Required", description: "Please enter your management access code.", variant: "destructive" });
       return;
     }
 
@@ -45,9 +39,19 @@ export default function AdminLoginPage() {
     setConfigError(false);
     
     try {
-      // Use official business email as the hidden secure ID
-      // The user-provided access code serves as the password
-      // Access Code: @admin.stylemaverik2021
+      // 1. Check Rate Limit via Server Action
+      const rateLimitCheck = await checkLoginBlock();
+      if (!rateLimitCheck.allowed) {
+        toast({
+          title: "Access Restricted",
+          description: rateLimitCheck.error || "Too many failed attempts. Try again later.",
+          variant: "destructive"
+        });
+        setLoading(false);
+        return;
+      }
+
+      // 2. Official business email is hidden secure ID
       await signInWithEmailAndPassword(auth, 'stylemaverikclothing@gmail.com', accessCode);
       
       toast({ title: "Authorized", description: "Identity verified. Redirecting..." });
@@ -62,8 +66,8 @@ export default function AdminLoginPage() {
         setConfigError(true);
       } else if (error.code === 'auth/configuration-not-found') {
         errorMessage = "Email/Password provider is not enabled in Firebase Console.";
-      } else if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
-        errorMessage = "Invalid Access Code. Ensure you have created the user in your Firebase Console exactly as described in the README.";
+      } else if (error.code === 'auth/invalid-credential') {
+        errorMessage = "Access Denied. Check your code or try again later.";
       }
 
       toast({
@@ -83,7 +87,7 @@ export default function AdminLoginPage() {
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Setup Required</AlertTitle>
           <AlertDescription className="text-xs">
-            Firebase keys are missing or invalid. Verify <code>src/firebase/config.ts</code> matches your Firebase Console Project Settings.
+            Firebase keys are missing or invalid. Verify <code>src/firebase/config.ts</code> matches your Firebase Console.
           </AlertDescription>
         </Alert>
       )}
@@ -96,7 +100,7 @@ export default function AdminLoginPage() {
              </div>
           </div>
           <CardTitle className="text-2xl font-bold tracking-tight font-serif">Management Access</CardTitle>
-          <CardDescription>Enter your access code to manage orders.</CardDescription>
+          <CardDescription>Secure login for Style Maverik INC.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-6">
@@ -114,12 +118,12 @@ export default function AdminLoginPage() {
               />
             </div>
             <Button type="submit" className="w-full h-12 text-lg font-bold shadow-lg" disabled={loading}>
-              {loading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : "Open Dashboard"}
+              {loading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : "Verify Identity"}
             </Button>
           </form>
           <div className="mt-8 pt-6 border-t border-primary/10">
              <p className="text-[10px] text-center text-muted-foreground uppercase tracking-[0.2em] font-medium opacity-50">
-               Style Maverik INC. Internal Secure Portal
+               Rate-limited secure portal
              </p>
           </div>
         </CardContent>
