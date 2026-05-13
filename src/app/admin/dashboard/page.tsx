@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
@@ -9,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Loader2, LogOut, Trash2, Search, Plus, Edit3, Image as ImageIcon } from 'lucide-react';
+import { Loader2, LogOut, Trash2, Search, Plus, Edit3, Image as ImageIcon, Box } from 'lucide-react';
 import { signOut } from 'firebase/auth';
 import { useToast } from '@/hooks/use-toast';
 import { errorEmitter } from '@/firebase/error-emitter';
@@ -35,6 +36,7 @@ export default function AdminDashboard() {
   const [productForm, setProductForm] = useState({
     name: '',
     price: '',
+    stock: '0',
     category: '',
     image: '',
     imageHint: '',
@@ -77,6 +79,7 @@ export default function AdminDashboard() {
     const productData = {
       name: productForm.name,
       price: parseFloat(productForm.price),
+      stock: parseInt(productForm.stock) || 0,
       category: productForm.category,
       image: productForm.image,
       imageHint: productForm.imageHint,
@@ -100,7 +103,7 @@ export default function AdminDashboard() {
 
     setIsProductDialogOpen(false);
     setEditingProduct(null);
-    setProductForm({ name: '', price: '', category: '', image: '', imageHint: '', colors: 'White, Black, Blue', sizes: 'S, M, L, XL, XXL' });
+    setProductForm({ name: '', price: '', stock: '0', category: '', image: '', imageHint: '', colors: 'White, Black, Blue', sizes: 'S, M, L, XL, XXL' });
   };
 
   const seedInventory = () => {
@@ -251,7 +254,7 @@ export default function AdminDashboard() {
                 )}
                 <Dialog open={isProductDialogOpen} onOpenChange={setIsProductDialogOpen}>
                   <DialogTrigger asChild>
-                    <Button size="sm" onClick={() => { setEditingProduct(null); setProductForm({ name: '', price: '', category: '', image: '', imageHint: '', colors: 'White, Black, Blue', sizes: 'S, M, L, XL, XXL' }); }}>
+                    <Button size="sm" onClick={() => { setEditingProduct(null); setProductForm({ name: '', price: '', stock: '0', category: '', image: '', imageHint: '', colors: 'White, Black, Blue', sizes: 'S, M, L, XL, XXL' }); }}>
                       <Plus className="h-4 w-4 mr-2" /> Add Goods
                     </Button>
                   </DialogTrigger>
@@ -277,9 +280,13 @@ export default function AdminDashboard() {
                           <Input id="category" required value={productForm.category} onChange={(e) => setProductForm({...productForm, category: e.target.value})} placeholder="e.g., Hoodies" />
                         </div>
                         <div className="space-y-2">
+                          <Label htmlFor="stock">Stock Quantity</Label>
+                          <Input id="stock" type="number" required value={productForm.stock} onChange={(e) => setProductForm({...productForm, stock: e.target.value})} placeholder="10" />
+                        </div>
+                      </div>
+                      <div className="space-y-2">
                           <Label htmlFor="image">Image URL</Label>
                           <Input id="image" required value={productForm.image} onChange={(e) => setProductForm({...productForm, image: e.target.value})} placeholder="https://..." />
-                        </div>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
@@ -312,12 +319,20 @@ export default function AdminDashboard() {
                       <div className="flex items-center justify-center h-full"><ImageIcon className="h-10 w-10 text-muted-foreground/20" /></div>
                     )}
                     <Badge className="absolute top-2 left-2 bg-black/60 backdrop-blur-md">{product.category}</Badge>
+                    {product.stock <= 0 && (
+                      <Badge variant="destructive" className="absolute top-2 right-2">Out of Stock</Badge>
+                    )}
                   </div>
                   <CardContent className="p-4">
                     <div className="flex justify-between items-start">
                       <div>
                         <h3 className="font-bold text-lg">{product.name}</h3>
-                        <p className="text-primary font-bold">GH₵{product.price?.toFixed(2)}</p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <p className="text-primary font-bold">GH₵{product.price?.toFixed(2)}</p>
+                          <span className="text-xs text-muted-foreground flex items-center gap-1">
+                            <Box className="h-3 w-3" /> {product.stock || 0} in stock
+                          </span>
+                        </div>
                       </div>
                       <div className="flex gap-2">
                         <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => { 
@@ -325,6 +340,7 @@ export default function AdminDashboard() {
                           setProductForm({
                             name: product.name,
                             price: product.price.toString(),
+                            stock: (product.stock || 0).toString(),
                             category: product.category,
                             image: product.image,
                             imageHint: product.imageHint || '',

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
@@ -8,7 +9,7 @@ import { doc } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-import { ShoppingCart, Loader2 } from 'lucide-react';
+import { ShoppingCart, Loader2, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import type { Product } from '@/lib/types';
@@ -41,6 +42,8 @@ export default function ProductDetailPage() {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
 
+  const isOutOfStock = product && (product.stock || 0) <= 0;
+
   useEffect(() => {
     if (product) {
       const storedHistory = localStorage.getItem('browsingHistory');
@@ -64,6 +67,8 @@ export default function ProductDetailPage() {
   }
   
   const handleAddToCart = () => {
+    if (isOutOfStock) return;
+    
     if (!selectedSize || !selectedColor) {
       toast({ title: "Selection required", description: "Please select a size and color.", variant: "destructive" });
       return;
@@ -96,12 +101,22 @@ export default function ProductDetailPage() {
             alt={product.name}
             data-ai-hint={product.imageHint || 'clothing item'}
             fill
-            className="rounded-lg shadow-lg object-cover"
+            className={cn("rounded-lg shadow-lg object-cover", isOutOfStock && "grayscale opacity-70")}
           />
+          {isOutOfStock && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Badge variant="destructive" className="text-xl px-8 py-3 uppercase tracking-[0.2em] font-black shadow-2xl">Out of Stock</Badge>
+            </div>
+          )}
         </div>
         <div className="space-y-6">
           <div>
-            <Badge variant="outline" className="mb-2 text-[10px] uppercase tracking-widest">{product.category}</Badge>
+            <div className="flex items-center gap-3 mb-2">
+              <Badge variant="outline" className="text-[10px] uppercase tracking-widest">{product.category}</Badge>
+              {product.stock > 0 && product.stock <= 5 && (
+                <Badge variant="secondary" className="text-[10px] bg-orange-500/20 text-orange-500 border-orange-500/20">Only {product.stock} left</Badge>
+              )}
+            </div>
             <h1 className="text-4xl font-bold tracking-tight font-serif">{product.name}</h1>
             <p className="text-2xl text-primary mt-2 font-bold">GH₵{product.price?.toFixed(2)}</p>
           </div>
@@ -109,7 +124,7 @@ export default function ProductDetailPage() {
           <div className="space-y-4 pt-4 border-t border-primary/10">
             <div>
               <h3 className="text-sm font-bold uppercase tracking-widest mb-3">Color</h3>
-              <RadioGroup onValueChange={setSelectedColor} className="flex flex-wrap gap-3">
+              <RadioGroup onValueChange={setSelectedColor} className="flex flex-wrap gap-3" disabled={isOutOfStock}>
                 {product.colors?.map((color: string) => (
                   <div key={color}>
                     <RadioGroupItem value={color} id={`color-${color}`} className="sr-only" />
@@ -117,7 +132,8 @@ export default function ProductDetailPage() {
                       htmlFor={`color-${color}`}
                       className={cn(
                         "cursor-pointer rounded-full h-8 w-8 flex items-center justify-center transition-all",
-                        selectedColor === color ? 'ring-2 ring-offset-2 ring-offset-background ring-primary scale-110' : 'ring-1 ring-border opacity-70'
+                        selectedColor === color ? 'ring-2 ring-offset-2 ring-offset-background ring-primary scale-110' : 'ring-1 ring-border opacity-70',
+                        isOutOfStock && "cursor-not-allowed opacity-30"
                       )}
                       style={{ backgroundColor: colorNameToHex[color] || '#ccc' }}
                       title={color}
@@ -128,7 +144,7 @@ export default function ProductDetailPage() {
             </div>
             <div>
               <h3 className="text-sm font-bold uppercase tracking-widest mb-3">Size</h3>
-              <RadioGroup onValueChange={setSelectedSize} className="flex flex-wrap gap-2">
+              <RadioGroup onValueChange={setSelectedSize} className="flex flex-wrap gap-2" disabled={isOutOfStock}>
                 {product.sizes?.map((size: string) => (
                    <div key={size}>
                     <RadioGroupItem value={size} id={`size-${size}`} className="sr-only" />
@@ -136,7 +152,8 @@ export default function ProductDetailPage() {
                       htmlFor={`size-${size}`}
                       className={cn(
                         "cursor-pointer rounded-md border-2 px-4 py-2 text-xs font-bold transition-all",
-                        selectedSize === size ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground hover:border-primary/40"
+                        selectedSize === size ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground hover:border-primary/40",
+                        isOutOfStock && "cursor-not-allowed opacity-30"
                       )}
                     >
                       {size}
@@ -147,9 +164,28 @@ export default function ProductDetailPage() {
             </div>
           </div>
           
-          <Button size="lg" className="w-full mt-8 h-14 text-lg font-bold shadow-xl" onClick={handleAddToCart}>
-            <ShoppingCart className="mr-2 h-5 w-5" /> Add to Order
+          <Button 
+            size="lg" 
+            className="w-full mt-8 h-14 text-lg font-bold shadow-xl" 
+            onClick={handleAddToCart}
+            disabled={isOutOfStock}
+          >
+            {isOutOfStock ? (
+              <>
+                <AlertCircle className="mr-2 h-5 w-5" /> Out of Stock
+              </>
+            ) : (
+              <>
+                <ShoppingCart className="mr-2 h-5 w-5" /> Add to Order
+              </>
+            )}
           </Button>
+          
+          {isOutOfStock && (
+            <p className="text-xs text-center text-muted-foreground font-medium uppercase tracking-widest opacity-50">
+              This item is currently unavailable for purchase.
+            </p>
+          )}
         </div>
       </div>
     </div>

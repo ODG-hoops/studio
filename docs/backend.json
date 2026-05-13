@@ -23,6 +23,7 @@
       "properties": {
         "name": { "type": "string" },
         "price": { "type": "number" },
+        "stock": { "type": "number", "description": "Current inventory count." },
         "image": { "type": "string" },
         "imageHint": { "type": "string" },
         "category": { "type": "string" },
@@ -30,7 +31,7 @@
         "sizes": { "type": "array", "items": { "type": "string" } },
         "updatedAt": { "type": "string", "format": "date-time" }
       },
-      "required": ["name", "price", "image", "category", "colors", "sizes"]
+      "required": ["name", "price", "stock", "image", "category", "colors", "sizes"]
     },
     "RateLimit": {
       "title": "Rate Limit",
