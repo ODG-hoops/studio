@@ -45,8 +45,9 @@ export default function AdminLoginPage() {
     setConfigError(false);
     
     try {
-      // Internal ID: admin@stylemaverik.com
-      // Access Code (Password): @admin.stylemaverik2021
+      // INTERNAL CONFIGURATION:
+      // We use a fixed secure ID 'admin@stylemaverik.com' 
+      // with the password provided by the user.
       await signInWithEmailAndPassword(auth, 'admin@stylemaverik.com', accessCode);
       
       toast({ title: "Authorized", description: "Identity verified. Redirecting..." });
@@ -62,7 +63,7 @@ export default function AdminLoginPage() {
       } else if (error.code === 'auth/configuration-not-found') {
         errorMessage = "Email/Password provider is not enabled in Firebase Console.";
       } else if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
-        errorMessage = "Invalid Access Code. Please ensure you created the user 'admin@stylemaverik.com' in your Firebase Console.";
+        errorMessage = "Invalid Access Code. Ensure 'admin@stylemaverik.com' is created in your Firebase Console with the correct password.";
       }
 
       toast({
