@@ -45,8 +45,9 @@ export default function AdminLoginPage() {
     setConfigError(false);
     
     try {
-      // Use a fixed internal ID and the access code as the password
-      // Your Access Code: @admin.stylemaverik2021
+      // Background management ID: admin@stylemaverik.com
+      // The user-provided access code serves as the password
+      // Access Code: @admin.stylemaverik2021
       await signInWithEmailAndPassword(auth, 'admin@stylemaverik.com', accessCode);
       
       toast({ title: "Authorized", description: "Identity verified. Redirecting..." });
