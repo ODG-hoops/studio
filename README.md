@@ -20,7 +20,7 @@ The login will fail with "Invalid Credential" until you perform these 2 steps in
 2.  **Create the Admin User Record**:
     *   Go to the **Users** tab (still within Authentication).
     *   Click **Add User**.
-    *   **Email:** `admin@stylemaverik.com` (Type this exactly)
+    *   **Email:** `stylemaverikclothing@gmail.com` (Type this exactly)
     *   **Password:** `@admin.stylemaverik2021` (This is your access code)
     *   Click **Add User**.
 
