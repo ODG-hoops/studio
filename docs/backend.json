@@ -25,7 +25,7 @@
         "price": { "type": "number" },
         "image": { "type": "string" },
         "imageHint": { "type": "string" },
-        "category": { "type": "string", "enum": ["Hoodies", "Sweatshirts", "Cotton T-Shirts"] },
+        "category": { "type": "string" },
         "description": { "type": "string" },
         "colors": { "type": "array", "items": { "type": "string" } },
         "sizes": { "type": "array", "items": { "type": "string" } },

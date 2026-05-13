@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
@@ -37,7 +36,7 @@ export default function AdminDashboard() {
   const [productForm, setProductForm] = useState({
     name: '',
     price: '',
-    category: 'Hoodies',
+    category: '',
     description: '',
     image: '',
     imageHint: '',
@@ -104,7 +103,7 @@ export default function AdminDashboard() {
 
     setIsProductDialogOpen(false);
     setEditingProduct(null);
-    setProductForm({ name: '', price: '', category: 'Hoodies', description: '', image: '', imageHint: '', colors: 'White, Black, Blue', sizes: 'S, M, L, XL, XXL' });
+    setProductForm({ name: '', price: '', category: '', description: '', image: '', imageHint: '', colors: 'White, Black, Blue', sizes: 'S, M, L, XL, XXL' });
   };
 
   const seedInventory = () => {
@@ -254,7 +253,7 @@ export default function AdminDashboard() {
                 )}
                 <Dialog open={isProductDialogOpen} onOpenChange={setIsProductDialogOpen}>
                   <DialogTrigger asChild>
-                    <Button size="sm" onClick={() => { setEditingProduct(null); setProductForm({ name: '', price: '', category: 'Hoodies', description: '', image: '', imageHint: '', colors: 'White, Black, Blue', sizes: 'S, M, L, XL, XXL' }); }}>
+                    <Button size="sm" onClick={() => { setEditingProduct(null); setProductForm({ name: '', price: '', category: '', description: '', image: '', imageHint: '', colors: 'White, Black, Blue', sizes: 'S, M, L, XL, XXL' }); }}>
                       <Plus className="h-4 w-4 mr-2" /> Add Goods
                     </Button>
                   </DialogTrigger>
@@ -277,16 +276,7 @@ export default function AdminDashboard() {
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <Label htmlFor="category">Category</Label>
-                          <Select value={productForm.category} onValueChange={(val) => setProductForm({...productForm, category: val})}>
-                            <SelectTrigger>
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="Hoodies">Hoodies</SelectItem>
-                              <SelectItem value="Sweatshirts">Sweatshirts</SelectItem>
-                              <SelectItem value="Cotton T-Shirts">Cotton T-Shirts</SelectItem>
-                            </SelectContent>
-                          </Select>
+                          <Input id="category" required value={productForm.category} onChange={(e) => setProductForm({...productForm, category: e.target.value})} placeholder="e.g., Hoodies" />
                         </div>
                         <div className="space-y-2">
                           <Label htmlFor="image">Image URL</Label>
