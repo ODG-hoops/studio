@@ -5,7 +5,8 @@ import { firebaseConfig } from './config';
 
 /**
  * Core Firebase initialization function. 
- * This is kept separate from React components to allow safe usage on the server (Server Actions).
+ * This is kept separate from React components to allow safe usage on both 
+ * client and server (Server Actions) without violating Next.js boundary rules.
  */
 export function initializeFirebase() {
   const firebaseApp =
