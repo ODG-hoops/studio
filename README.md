@@ -26,19 +26,24 @@ The login will fail with "Invalid Credential" until you perform these 2 steps in
 
 ---
 
-## 📦 How Orders Are Received
+## 📦 How to See Recent Changes
 
-When a customer completes a purchase:
-1.  **Payment:** Verified instantly via Paystack.
-2.  **Database:** The order (items, total, location) is saved to your private Firestore database.
-3.  **Dashboard:** The order appears instantly in your Management Dashboard.
+1.  **Code Changes:** If you updated the UI (buttons, text), wait ~3 minutes for the build to finish.
+2.  **Product Changes:** Your site is now **Live**. 
+    *   Go to `/admin/dashboard`
+    *   Login with `@admin.stylemaverik2021`
+    *   Go to **Inventory Goods**
+    *   Click **Initialize Defaults** (if first time) or **Add Goods** to see them instantly on the site.
+
+---
 
 ## 📊 Using the Dashboard
 
 From the dashboard at `/admin/dashboard`, you can:
 *   **Track Revenue:** See the GH₵ total for all orders.
+*   **Manage Inventory:** Add, edit, or delete items instantly.
+*   **Track Stock:** Set stock levels to automatically mark items as "Out of Stock".
 *   **Manage Logistics:** Update order status (Pending → Processing → Shipped -> Delivered).
-*   **View Details:** See exactly what items, sizes, and colors were ordered, and where they need to be delivered.
 
 ---
 *Style Maverik INC. - Redefining Modern Elegance*

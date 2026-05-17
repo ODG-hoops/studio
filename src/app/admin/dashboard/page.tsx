@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Loader2, LogOut, Trash2, Search, Plus, Edit3, Image as ImageIcon, Box } from 'lucide-react';
+import { Loader2, LogOut, Trash2, Search, Plus, Edit3, Image as ImageIcon, Box, Database, CloudCheck } from 'lucide-react';
 import { signOut } from 'firebase/auth';
 import { useToast } from '@/hooks/use-toast';
 import { errorEmitter } from '@/firebase/error-emitter';
@@ -151,8 +151,13 @@ export default function AdminDashboard() {
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 border-b border-primary/10 pb-6">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight text-primary font-serif">Management Portal</h1>
-            <p className="text-muted-foreground mt-1 text-sm">Style Maverik INC. Internal Operations</p>
+            <div className="flex items-center gap-2 mb-1">
+              <h1 className="text-3xl font-bold tracking-tight text-primary font-serif">Management Portal</h1>
+              <Badge variant="outline" className="bg-green-500/10 text-green-500 border-green-500/20 gap-1 text-[10px] h-5">
+                <Database className="h-3 w-3" /> Live Sync Active
+              </Badge>
+            </div>
+            <p className="text-muted-foreground text-sm">Style Maverik INC. Internal Operations</p>
           </div>
           <Button variant="outline" size="sm" onClick={handleLogout} className="border-primary/20">
             <LogOut className="mr-2 h-4 w-4" /> Sign Out
@@ -250,7 +255,9 @@ export default function AdminDashboard() {
               </div>
               <div className="flex gap-2">
                 {!firestoreProducts?.length && !productsLoading && (
-                  <Button variant="outline" size="sm" onClick={seedInventory}>Initialize Defaults</Button>
+                  <Button variant="outline" size="sm" onClick={seedInventory} className="border-dashed border-primary/40 animate-pulse">
+                    <Database className="h-4 w-4 mr-2" /> Initialize Live Inventory
+                  </Button>
                 )}
                 <Dialog open={isProductDialogOpen} onOpenChange={setIsProductDialogOpen}>
                   <DialogTrigger asChild>
