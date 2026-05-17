@@ -1,7 +1,7 @@
 
 # Style Maverik INC. - Admin
 
-This project is now fully configured with a private Admin panel and automated order tracking.
+This project is now fully configured with a private Admin section and automated order tracking.
 
 ## 🔑 Your Admin Credentials
 
@@ -28,7 +28,7 @@ The login will fail with "Invalid Credential" until you perform these 2 steps in
 
 ## 🚀 How to Deploy Changes to the Live Site
 
-1.  **Apply Code Changes**: Click the "Apply" or "Commit" button in your development interface. This triggers the Vercel/Firebase build.
+1.  **Apply Code Changes**: Click the "Apply" or "Commit" button in your development interface. This triggers the Vercel build.
 2.  **Wait for Build**: The live site will take approximately **3-5 minutes** to rebuild and reflect your changes.
 3.  **Sync Database**: If your products are not showing, go to `/admin/dashboard` -> **Inventory Goods** and click **Initialize Live Inventory**.
 
