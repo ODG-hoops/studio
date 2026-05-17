@@ -1,7 +1,7 @@
 
 # Style Maverik INC. - Management Guide
 
-This project is now fully configured with a private Admin Portal and automated order tracking.
+This project is now fully configured with a private Admin Panel and automated order tracking.
 
 ## 🔑 Your Admin Credentials
 
@@ -34,7 +34,7 @@ The login will fail with "Invalid Credential" until you perform these 2 steps in
 
 ---
 
-## 📊 Using the Dashboard
+## 📊 Using the Admin Panel
 
 From the dashboard at `/admin/dashboard`, you can:
 *   **Track Revenue:** See the GH₵ total for all orders.

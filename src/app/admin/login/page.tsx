@@ -31,7 +31,7 @@ export default function AdminLoginPage() {
     }
 
     if (!accessCode) {
-      toast({ title: "Code Required", description: "Please enter your management access code.", variant: "destructive" });
+      toast({ title: "Code Required", description: "Please enter your admin access code.", variant: "destructive" });
       return;
     }
 
@@ -99,7 +99,7 @@ export default function AdminLoginPage() {
                 <ShieldCheck className="h-8 w-8 text-primary" />
              </div>
           </div>
-          <CardTitle className="text-2xl font-bold tracking-tight font-serif">Management Access</CardTitle>
+          <CardTitle className="text-2xl font-bold tracking-tight font-serif">Admin Panel Access</CardTitle>
           <CardDescription>Secure login for Style Maverik INC.</CardDescription>
         </CardHeader>
         <CardContent>

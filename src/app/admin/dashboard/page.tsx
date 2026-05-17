@@ -152,7 +152,7 @@ export default function AdminDashboard() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 border-b border-primary/10 pb-6">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <h1 className="text-3xl font-bold tracking-tight text-primary font-serif">Management Portal</h1>
+              <h1 className="text-3xl font-bold tracking-tight text-primary font-serif">Admin Panel</h1>
               <Badge variant="outline" className="bg-green-500/10 text-green-500 border-green-500/20 gap-1 text-[10px] h-5">
                 <Database className="h-3 w-3" /> Live Sync Active
               </Badge>
