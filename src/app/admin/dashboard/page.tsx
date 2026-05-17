@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
@@ -10,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Loader2, LogOut, Trash2, Search, Plus, Edit3, Image as ImageIcon, Box, Database, CloudCheck } from 'lucide-react';
+import { Loader2, LogOut, Trash2, Search, Plus, Edit3, Image as ImageIcon, Box, Database } from 'lucide-react';
 import { signOut } from 'firebase/auth';
 import { useToast } from '@/hooks/use-toast';
 import { errorEmitter } from '@/firebase/error-emitter';
@@ -109,7 +108,7 @@ export default function AdminDashboard() {
   const seedInventory = () => {
     if (!db || firestoreProducts?.length) return;
     initialProducts.forEach(prod => {
-      const { description, ...rest } = prod;
+      const { ...rest } = prod;
       addDoc(collection(db, 'products'), { ...rest, updatedAt: serverTimestamp() });
     });
     toast({ title: "Inventory Initialized", description: "Seeded the database with default products." });
@@ -152,7 +151,7 @@ export default function AdminDashboard() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 border-b border-primary/10 pb-6">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <h1 className="text-3xl font-bold tracking-tight text-primary font-serif">Admin Panel</h1>
+              <h1 className="text-3xl font-bold tracking-tight text-primary font-serif">Admin</h1>
               <Badge variant="outline" className="bg-green-500/10 text-green-500 border-green-500/20 gap-1 text-[10px] h-5">
                 <Database className="h-3 w-3" /> Live Sync Active
               </Badge>

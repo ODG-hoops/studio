@@ -1,4 +1,3 @@
-
 import Link from 'next/link';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
@@ -44,7 +43,7 @@ export function Footer() {
               <div className="mt-8 border-t border-primary/10 pt-4">
                 <Link href="/admin/login" className="text-[10px] uppercase tracking-[0.2em] text-primary hover:text-white flex items-center gap-2 transition-all font-bold group">
                   <Lock className="h-3 w-3 transition-transform group-hover:scale-110" /> 
-                  <span className="border-b border-primary/30 group-hover:border-white">Admin Panel</span>
+                  <span className="border-b border-primary/30 group-hover:border-white">Admin</span>
                 </Link>
               </div>
             </div>

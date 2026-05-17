@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useFirestore, useCollection } from '@/firebase';
@@ -6,8 +5,7 @@ import { collection, query, orderBy } from 'firebase/firestore';
 import { useMemo } from 'react';
 import { ProductCard } from '@/components/product-card';
 import { products as fallbackProducts } from '@/lib/data';
-import { Loader2, Database } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import { Loader2 } from 'lucide-react';
 
 export default function CollectionsPage() {
   const db = useFirestore();
@@ -31,11 +29,6 @@ export default function CollectionsPage() {
       <div className="text-center mb-12">
         <div className="flex flex-col items-center justify-center gap-2 mb-2">
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Our Collections</h1>
-            {isLive && (
-                <Badge variant="outline" className="text-[8px] uppercase tracking-[0.2em] h-5 gap-1 opacity-50">
-                    <Database className="h-2 w-2" /> Live Database
-                </Badge>
-            )}
         </div>
         <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
           Explore our curated selection of timeless pieces and modern essentials.

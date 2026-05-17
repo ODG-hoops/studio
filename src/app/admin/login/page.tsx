@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -99,7 +98,7 @@ export default function AdminLoginPage() {
                 <ShieldCheck className="h-8 w-8 text-primary" />
              </div>
           </div>
-          <CardTitle className="text-2xl font-bold tracking-tight font-serif">Admin Panel Access</CardTitle>
+          <CardTitle className="text-2xl font-bold tracking-tight font-serif">Admin Access</CardTitle>
           <CardDescription>Secure login for Style Maverik INC.</CardDescription>
         </CardHeader>
         <CardContent>
