@@ -28,7 +28,7 @@ The login will fail with "Invalid Credential" until you perform these 2 steps in
 
 ## 🚀 How to Deploy Changes to the Live Site
 
-1.  **Apply Code Changes**: Click the "Apply" or "Commit" button in your development interface.
+1.  **Apply Code Changes**: Click the "Apply" or "Commit" button in your development interface. This triggers the Vercel/Firebase build.
 2.  **Wait for Build**: The live site will take approximately **3-5 minutes** to rebuild and reflect your changes.
 3.  **Sync Database**: If your products are not showing, go to `/admin/dashboard` -> **Inventory Goods** and click **Initialize Live Inventory**.
 
