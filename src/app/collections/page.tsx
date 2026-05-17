@@ -27,11 +27,9 @@ export default function CollectionsPage() {
   return (
     <div className="container mx-auto px-4 py-16 md:py-24">
       <div className="text-center mb-12">
-        <div className="flex flex-col items-center justify-center gap-2 mb-2">
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Our Collections</h1>
-        </div>
-        <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
-          Explore our curated selection of timeless pieces and modern essentials.
+        <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Our Collections</h1>
+        <p className="text-muted-foreground mt-4 max-w-2xl mx-auto uppercase text-[10px] tracking-[0.2em] font-bold opacity-60">
+          Curated Essentials
         </p>
       </div>
 

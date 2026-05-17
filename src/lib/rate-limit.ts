@@ -1,6 +1,6 @@
 'use server';
 
-import { initializeFirebase } from '@/firebase';
+import { initializeFirebase } from '@/firebase/init';
 import { doc, getDoc, setDoc, serverTimestamp, Timestamp, type Firestore } from 'firebase/firestore';
 
 let firestore: Firestore | null = null;
