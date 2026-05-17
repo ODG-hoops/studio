@@ -41,7 +41,7 @@ export function Footer() {
                 </Button>
               </form>
               <div className="mt-6">
-                <Link href="/admin/login" className="text-[10px] uppercase tracking-widest text-muted-foreground/30 hover:text-primary flex items-center gap-1 transition-colors">
+                <Link href="/admin/login" className="text-[10px] uppercase tracking-widest text-muted-foreground hover:text-primary flex items-center gap-1 transition-colors border-b border-primary/20 pb-1">
                   <Lock className="h-2 w-2" /> Admin Portal
                 </Link>
               </div>

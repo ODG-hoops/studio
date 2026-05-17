@@ -26,14 +26,11 @@ The login will fail with "Invalid Credential" until you perform these 2 steps in
 
 ---
 
-## 📦 How to See Recent Changes
+## 🚀 How to Deploy Changes to the Live Site
 
-1.  **Code Changes:** If you updated the UI (buttons, text), wait ~3 minutes for the build to finish.
-2.  **Product Changes:** Your site is now **Live**. 
-    *   Go to `/admin/dashboard`
-    *   Login with `@admin.stylemaverik2021`
-    *   Go to **Inventory Goods**
-    *   Click **Initialize Defaults** (if first time) or **Add Goods** to see them instantly on the site.
+1.  **Apply Code Changes**: Click the "Apply" or "Commit" button in your development interface.
+2.  **Wait for Build**: The live site will take approximately **3-5 minutes** to rebuild and reflect your changes.
+3.  **Sync Database**: If your products are not showing, go to `/admin/dashboard` -> **Inventory Goods** and click **Initialize Live Inventory**.
 
 ---
 
